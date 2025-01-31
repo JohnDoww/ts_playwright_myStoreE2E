@@ -3,9 +3,9 @@
 /**
  * ---------------------------------------
  * Обовʼязково повинно бути покрите тестами такий функціонал як 
- * -TEST1- пошук (+ результати пошуку)
- * -TEST2- фільтри 
- * -- іконки товарів у пошуку і функціонал іконок
+ * +++++++++++++++++ TEST1- пошук (+ результати пошуку)
+ * +++++++++++++++++ TEST2- фільтри 
+ * +++++++++++++++++++++ іконки товарів у пошуку і функціонал іконок
  * -TEST3- сторінка деталей товару 
  * -- TEST4-6_ функціонал кошику товарів (збільшити, зменшити кількість товарів) 
  * -TEST7 - сторінка оформлення замовлення (заповнення форми)
@@ -13,16 +13,16 @@
 
  * 
  * // describe search
- * test 1 - search - // this one also can be parametrised
+ * ++++++++++++++++++++++test 1 - search - // this one also can be parametrised
  * search: input anu data and see that the first result contains input in header
- * tets 2 search - autocompete all results have my search test 
+ * ++++++++++++++++++++++tets 2 search - autocompete all results have my search test 
  * 
  * // DEscribe: filtering  
- * test 3 - apply brends filter for category - parametrised test
+ * +++++++++++++++++++++test 3 - apply brends filter for category 
  * idea: we will putthere category of items and one or severaal prends. Then we will assert that all items on the page contains brand 1 or 2 or 3 or .....
  * 
  * // Describe: item page 
- * test 4 - preview information matchs with information in description
+ * +++++++++++++=test 4 - preview information matchs with information in description
  * test 5 - navigation between item photos 
  * 
  * // create describe cart
@@ -33,7 +33,8 @@
  * 
  * // order creation 
  * test 10 - fill in order info 
- * test 11 - contact us form
+ * test 11 - купить айтем як зарєганий юзер
+ * test 12 - registration - parametrised test - use in needed amount of data and max 
  */
 
 /**
