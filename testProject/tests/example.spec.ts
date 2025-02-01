@@ -1,4 +1,5 @@
-import { test, expect, request, APIRequestContext } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
+import { loginUser } from "../fixtures/fixtures";
 
 test("STORE-001: Search word contains into search result items", async ({
   page,
@@ -95,48 +96,213 @@ test("STORE-004. Proposed items in search match with search request", async ({
   }
 });
 
-test("Check login", async ({ browser }) => {
-  const requestContext = await request.newContext();
-  await requestContext.post(
-    "https://teststore.automationtesting.co.uk/index.php?controller=authentication?back=https%3A%2F%2Fteststore.automationtesting.co.uk%2Findex.php%3Fcontroller%3Dcontact",
-    {
-      form: {
-        back: "my-account",
-        email: "sdsds@com.com",
-        password: "sdasdasdasdas2",
-        submitLogin: 1,
-      },
-    }
+test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
+  const itemOnHomePage = page.locator(".thumbnail-top");
+  const addToCartBtn = page.locator("button.add-to-cart");
+  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const closeModalBtn = page.locator("#blockcart-modal .close");
+  const cartBtn = page.locator("#_desktop_cart");
+  const amountOfAddedItemInCart = page.locator(
+    '[name="product-quantity-spin"]'
+  );
+  const increaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-up");
+
+  let defaultAmountOfNeededItems = 1;
+  const waitTillNeededResponse = page.waitForResponse(
+    RegExp("^.*\\action=refresh\\b.*$")
   );
 
-  const savedStorageState = await requestContext.storageState();
+  await page.goto("https://teststore.automationtesting.co.uk");
 
-  const context = await browser.newContext({ storageState: savedStorageState });
-  const page = await context.newPage();
+  await itemOnHomePage.first().click();
+  await addToCartBtn.click();
 
-  await page.goto("https://teststore.automationtesting.co.uk/");
+  await modalAfterAddingItem.waitFor({ state: "visible" });
+
+  await closeModalBtn.click();
+  await cartBtn.click();
+
+  const amountOfAddedItem = await amountOfAddedItemInCart.getAttribute("value");
+  expect(amountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
+
+  await increaseAmountOfAddedItems.click();
+
+  await waitTillNeededResponse;
+  const increasedAmountOfAddedItem = await amountOfAddedItemInCart.getAttribute(
+    "value"
+  );
+  defaultAmountOfNeededItems += 1;
+  expect(increasedAmountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
 });
 
-test("Check register", async ({ browser }) => {
-  const requestContext = await request.newContext();
-  await requestContext.post(
-    "https://teststore.automationtesting.co.uk/index.php?controller=registration",
-    {
-      form: {
-        firstname: "Super",
-        lastname: "Mommy",
-        email: "superDady1@who.com",
-        password: "Qwerty123!",
-        psgdpr: 1,
-        submitCreate: 1,
-      },
-    }
+test("STORE-006. Decrease item quantity -1 in cart", async ({ page }) => {
+  const itemOnHomePage = page.locator(".thumbnail-top");
+  const addToCartBtn = page.locator("button.add-to-cart");
+  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const closeModalBtn = page.locator("#blockcart-modal .close");
+  const cartBtn = page.locator("#_desktop_cart");
+  const amountOfAddedItemInCart = page.locator(
+    '[name="product-quantity-spin"]'
+  );
+  const increaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-up");
+  const decreaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-down");
+
+  let defaultAmountOfNeededItems = 1;
+
+  await page.goto("https://teststore.automationtesting.co.uk");
+
+  await itemOnHomePage.first().click();
+  await increaseAmountOfAddedItems.click();
+  defaultAmountOfNeededItems += 1;
+
+  await addToCartBtn.click();
+
+  await modalAfterAddingItem.waitFor({ state: "visible" });
+
+  await closeModalBtn.click();
+  await cartBtn.click();
+
+  const amountOfAddedItem = await amountOfAddedItemInCart.getAttribute("value");
+  expect(amountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
+
+  await decreaseAmountOfAddedItems.click();
+  defaultAmountOfNeededItems -= 1;
+  const waitTillNeededResponse = page.waitForResponse(
+    RegExp("^.*\\action=refresh\\b.*$")
+  );
+  await waitTillNeededResponse;
+  const increasedAmountOfAddedItem = await amountOfAddedItemInCart.getAttribute(
+    "value"
+  );
+  expect(increasedAmountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
+});
+
+test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
+  const itemOnHomePage = page.locator(".thumbnail-top");
+  const addToCartBtn = page.locator("button.add-to-cart");
+  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const closeModalBtn = page.locator("#blockcart-modal .close");
+  const cartBtn = page.locator("#_desktop_cart");
+  const itemInCart = page.locator(".cart-item");
+  const removeItemFromCartBtn = page.locator(
+    ".remove-from-cart .material-icons"
   );
 
-  const savedStorageState = await requestContext.storageState();
+  const expectedAmountOfItemsInCart = 2;
 
-  const context = await browser.newContext({ storageState: savedStorageState });
-  const page = await context.newPage();
+  await page.goto("https://teststore.automationtesting.co.uk");
 
-  await page.goto("https://teststore.automationtesting.co.uk/");
+  await itemOnHomePage.first().click();
+  await addToCartBtn.click();
+
+  await page.goto("https://teststore.automationtesting.co.uk");
+
+  await itemOnHomePage.last().click();
+  await addToCartBtn.click();
+
+  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await closeModalBtn.click();
+  await cartBtn.click();
+
+  expect((await itemInCart.all()).length).toBe(expectedAmountOfItemsInCart);
+  await removeItemFromCartBtn.first().click({ force: true });
+  const waitUpdatingStateOfCart = await page.waitForResponse(
+    (response) =>
+      response.url().includes("controller=cart&ajax=1&action=refresh") &&
+      response.status() === 200
+  );
+  expect((await itemInCart.all()).length).toBe(expectedAmountOfItemsInCart - 1);
+
+  waitUpdatingStateOfCart;
+  await removeItemFromCartBtn.first().click();
+  await expect(itemInCart).not.toBeVisible();
 });
+
+test("STORE-008. Cart logo has indicator of items in cart", async ({
+  page,
+}) => {
+  const itemOnHomePage = page.locator(".thumbnail-top");
+  const addToCartBtn = page.locator("button.add-to-cart");
+  const closeModalBtn = page.locator("#blockcart-modal .close");
+  const increaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-up");
+
+  const cartItemsCounter = page.locator(".header .cart-products-count");
+
+  let expectedCartCounterValue = 1;
+
+  await page.goto("https://teststore.automationtesting.co.uk");
+
+  await itemOnHomePage.first().click();
+  await addToCartBtn.click();
+  await closeModalBtn.click();
+
+  expect(await cartItemsCounter.innerText()).toContain(
+    `${expectedCartCounterValue}`
+  );
+
+  await increaseAmountOfAddedItems.click();
+  await increaseAmountOfAddedItems.click();
+  await addToCartBtn.click();
+  await closeModalBtn.click();
+  expectedCartCounterValue += 3;
+
+  expect(await cartItemsCounter.innerText()).toContain(
+    `${expectedCartCounterValue}`
+  );
+});
+
+// loginUser("Fixture check", async ({ shopPages }) => {
+//   const proposedItemInSearch = shopPages.page.locator(".ui-menu-item");
+//   const searchInput = shopPages.page.locator('[aria-label="Search"]');
+//   const searchRequest = "frame ";
+
+//   await searchInput.fill(searchRequest);
+
+//   await proposedItemInSearch.first().waitFor({ state: "visible" });
+// });
+
+// test("Check login", async ({ browser }) => {
+//   const requestContext = await request.newContext();
+//   await requestContext.post(
+//     "https://teststore.automationtesting.co.uk/index.php?controller=authentication?back=https%3A%2F%2Fteststore.automationtesting.co.uk%2Findex.php%3Fcontroller%3Dcontact",
+//     {
+//       form: {
+//         back: "my-account",
+//         email: "sdsds@com.com",
+//         password: "sdasdasdasdas2",
+//         submitLogin: 1,
+//       },
+//     }
+//   );
+
+//   const savedStorageState = await requestContext.storageState();
+
+//   const context = await browser.newContext({ storageState: savedStorageState });
+//   const page = await context.newPage();
+
+//   await page.goto("https://teststore.automationtesting.co.uk/");
+// });
+
+// test("Check register", async ({ browser }) => {
+//   const requestContext = await request.newContext();
+//   await requestContext.post(
+//     "https://teststore.automationtesting.co.uk/index.php?controller=registration",
+//     {
+//       form: {
+//         firstname: "Super",
+//         lastname: "Mommy",
+//         email: "superDady1@who.com",
+//         password: "Qwerty123!",
+//         psgdpr: 1,
+//         submitCreate: 1,
+//       },
+//     }
+//   );
+
+//   const savedStorageState = await requestContext.storageState();
+
+//   const context = await browser.newContext({ storageState: savedStorageState });
+//   const page = await context.newPage();
+
+//   await page.goto("https://teststore.automationtesting.co.uk/");
+// });
