@@ -97,9 +97,9 @@ test("STORE-004. Proposed items in search match with search request", async ({
 });
 
 test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
-  const itemOnHomePage = page.locator(".thumbnail-top");
-  const addToCartBtn = page.locator("button.add-to-cart");
-  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const itemOnHomePage = page.locator(".product-thumbnail img");
+  const addToCartBtn = page.locator(".product-quantity .add");
+  const modalAfterAddingItem = page.locator("#myModalLabel");
   const closeModalBtn = page.locator("#blockcart-modal .close");
   const cartBtn = page.locator("#_desktop_cart");
   const amountOfAddedItemInCart = page.locator(
@@ -108,22 +108,29 @@ test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
   const increaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-up");
 
   let defaultAmountOfNeededItems = 1;
-  const waitTillNeededResponse = page.waitForResponse(
-    RegExp("^.*\\action=refresh\\b.*$")
-  );
 
   await page.goto("https://teststore.automationtesting.co.uk");
 
   await itemOnHomePage.first().click();
+  await page.reload();
+  const waitForModalResponse1 = page.waitForResponse((response) =>
+    response.url().includes("controller")
+  );
+
   await addToCartBtn.click();
+  await waitForModalResponse1;
 
-  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await modalAfterAddingItem.waitFor();
 
+  await closeModalBtn.waitFor();
   await closeModalBtn.click();
   await cartBtn.click();
 
   const amountOfAddedItem = await amountOfAddedItemInCart.getAttribute("value");
   expect(amountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
+  const waitTillNeededResponse = page.waitForResponse(
+    RegExp("^.*\\action=refresh\\b.*$")
+  );
 
   await increaseAmountOfAddedItems.click();
 
@@ -136,9 +143,9 @@ test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
 });
 
 test("STORE-006. Decrease item quantity -1 in cart", async ({ page }) => {
-  const itemOnHomePage = page.locator(".thumbnail-top");
-  const addToCartBtn = page.locator("button.add-to-cart");
-  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const itemOnHomePage = page.locator(".product-thumbnail img");
+  const addToCartBtn = page.locator(".product-quantity .add");
+  const modalAfterAddingItem = page.locator("#blockcart-modal .modal-header");
   const closeModalBtn = page.locator("#blockcart-modal .close");
   const cartBtn = page.locator("#_desktop_cart");
   const amountOfAddedItemInCart = page.locator(
@@ -178,12 +185,14 @@ test("STORE-006. Decrease item quantity -1 in cart", async ({ page }) => {
 });
 
 test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
-  const itemOnHomePage = page.locator(".thumbnail-top");
-  const addToCartBtn = page.locator("button.add-to-cart");
-  const modalAfterAddingItem = page.locator("#blockcart-modal.in");
+  const itemOnHomePage = page.locator(".product-thumbnail img");
+
+  const addToCartBtn = page.locator(".product-quantity .add");
+
+  const modalAfterAddingItem = page.locator("#blockcart-modal .modal-header");
   const closeModalBtn = page.locator("#blockcart-modal .close");
   const cartBtn = page.locator("#_desktop_cart");
-  const itemInCart = page.locator(".cart-item");
+  const itemInCart = page.locator("li.cart-item");
   const removeItemFromCartBtn = page.locator(
     ".remove-from-cart .material-icons"
   );
@@ -191,29 +200,64 @@ test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
   const expectedAmountOfItemsInCart = 2;
 
   await page.goto("https://teststore.automationtesting.co.uk");
-
+  await itemOnHomePage.first().waitFor();
   await itemOnHomePage.first().click();
-  await addToCartBtn.click();
+  await addToCartBtn.waitFor();
 
+  await page.reload();
+  const waitForModalResponse1 = page.waitForResponse((response) =>
+    response.url().includes("controller")
+  );
+
+  await addToCartBtn.click();
+  const response1 = await waitForModalResponse1;
+
+  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await closeModalBtn.click();
   await page.goto("https://teststore.automationtesting.co.uk");
 
   await itemOnHomePage.last().click();
+  const waitForModalResponse2 = page.waitForResponse((response) =>
+    response.url().includes("fc=module&module=ps_shoppingcart&controller")
+  );
   await addToCartBtn.click();
+  const response2 = await waitForModalResponse2;
 
   await modalAfterAddingItem.waitFor({ state: "visible" });
   await closeModalBtn.click();
   await cartBtn.click();
 
+  await page.locator(".cart-overview.js-cart").waitFor({ state: "visible" });
+
+  await expect
+    .poll(
+      async () => {
+        let visibleCount = 0;
+        for (const e of await itemInCart.all()) {
+          if (await e.isVisible()) visibleCount++;
+        }
+        return visibleCount;
+      },
+      {
+        message: "Expected exactly 2 visible elements, but condition not met",
+        intervals: [500, 1_000], // Optional polling overrides
+        timeout: 20_000, // Timeout override
+      }
+    )
+    .toBe(2);
+
   expect((await itemInCart.all()).length).toBe(expectedAmountOfItemsInCart);
-  await removeItemFromCartBtn.first().click({ force: true });
-  const waitUpdatingStateOfCart = await page.waitForResponse(
-    (response) =>
-      response.url().includes("controller=cart&ajax=1&action=refresh") &&
-      response.status() === 200
+  const waitUpdatingStateOfCart = page.waitForResponse((response) =>
+    response.url().includes("fc=module&module=ps_shoppingcart&controller=ajax")
   );
+
+  await removeItemFromCartBtn.first().click();
+
+  const waitResponse3 = await waitUpdatingStateOfCart;
+  await page.reload();
+  await itemInCart.first().waitFor();
   expect((await itemInCart.all()).length).toBe(expectedAmountOfItemsInCart - 1);
 
-  waitUpdatingStateOfCart;
   await removeItemFromCartBtn.first().click();
   await expect(itemInCart).not.toBeVisible();
 });
@@ -221,10 +265,12 @@ test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
 test("STORE-008. Cart logo has indicator of items in cart", async ({
   page,
 }) => {
-  const itemOnHomePage = page.locator(".thumbnail-top");
-  const addToCartBtn = page.locator("button.add-to-cart");
+  const itemOnHomePage = page.locator(".product-thumbnail img");
+
+  const addToCartBtn = page.locator(".product-quantity .add");
   const closeModalBtn = page.locator("#blockcart-modal .close");
-  const increaseAmountOfAddedItems = page.locator(".bootstrap-touchspin-up");
+  const modalAfterAddingItem = page.locator("#blockcart-modal .modal-header");
+  const neededItemOnItemPage = page.locator("#quantity_wanted");
 
   const cartItemsCounter = page.locator(".header .cart-products-count");
 
@@ -233,18 +279,27 @@ test("STORE-008. Cart logo has indicator of items in cart", async ({
   await page.goto("https://teststore.automationtesting.co.uk");
 
   await itemOnHomePage.first().click();
+
+  await page.reload();
+
+  await addToCartBtn.waitFor({ state: "visible" });
+
   await addToCartBtn.click();
+
+  await modalAfterAddingItem.waitFor({ state: "visible" });
   await closeModalBtn.click();
 
   expect(await cartItemsCounter.innerText()).toContain(
     `${expectedCartCounterValue}`
   );
 
-  await increaseAmountOfAddedItems.click();
-  await increaseAmountOfAddedItems.click();
+  await neededItemOnItemPage.fill("3");
+
   await addToCartBtn.click();
   await closeModalBtn.click();
   expectedCartCounterValue += 3;
+
+  await page.reload();
 
   expect(await cartItemsCounter.innerText()).toContain(
     `${expectedCartCounterValue}`
