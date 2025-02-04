@@ -1,5 +1,6 @@
 import { test, request } from "@playwright/test";
 import { BasePage } from "../pages/BasePage";
+import dataGenerator from "../utils/testData/dataGenerator";
 
 type ShopPages = {
   shopPages: BasePage;
@@ -7,17 +8,19 @@ type ShopPages = {
 
 export const loginUser = test.extend<ShopPages>({
   shopPages: async ({ browser }, use) => {
-
-    //conver to method
+    //convert to method
     const requestContext = await request.newContext();
     await requestContext.post(
-      "https://teststore.automationtesting.co.uk/index.php?controller=authentication?back=https%3A%2F%2Fteststore.automationtesting.co.uk%2Findex.php%3Fcontroller%3Dcontact",
+      "https://teststore.automationtesting.co.uk/index.php?controller=registration",
+
       {
         form: {
-          back: "my-account",
-          email: "sdsds@com.com",
-          password: "sdasdasdasdas2",
-          submitLogin: 1,
+          firstname: "Test",
+          lastname: "User",
+          email: dataGenerator.getNewEmail(),
+          password: "Qwerty123!",
+          psgdpr: 1,
+          submitCreate: 1,
         },
       }
     );
@@ -29,9 +32,6 @@ export const loginUser = test.extend<ShopPages>({
     });
     const page = await context.newPage();
     const testMart = new BasePage(page);
-
-    await testMart.page.goto("https://teststore.automationtesting.co.uk/");
-
     await use(testMart);
   },
 });

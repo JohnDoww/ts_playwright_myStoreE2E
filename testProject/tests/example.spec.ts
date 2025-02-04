@@ -1,5 +1,6 @@
-import { test, expect, request } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { loginUser } from "../fixtures/fixtures";
+import { regData as testData } from "../utils/testData/registrationDataObjects";
 
 test("STORE-001: Search word contains into search result items", async ({
   page,
@@ -10,6 +11,7 @@ test("STORE-001: Search word contains into search result items", async ({
 
   await page.goto("https://teststore.automationtesting.co.uk/index.php");
 
+  await searchInput.waitFor({ state: "visible" });
   await searchInput.fill(searchRequest);
   await page.keyboard.press("Enter");
 
@@ -24,9 +26,7 @@ test("STORE-002: Filter amount display right amount of items", async ({
   page,
 }) => {
   const catalogItem = page.locator(".product-description");
-  const compositionFilterSection = page.locator(
-    '//*[contains(text(), "Composition")]//following-sibling::ul//li'
-  );
+  const compositionFilterSection = page.locator("#facet_99832 li");
   const loader = page.locator(".spinner");
 
   await page.goto(
@@ -34,8 +34,11 @@ test("STORE-002: Filter amount display right amount of items", async ({
   );
 
   for (const element of await compositionFilterSection.all()) {
-    await element.waitFor({ state: "visible" });
+    await expect(element).toBeVisible();
     await element.click();
+    if (await loader.isVisible()) {
+      await loader.waitFor({ state: "hidden" });
+    }
     const productsAmountOnFilter = await element
       .locator("//a//span")
       .innerText();
@@ -45,13 +48,9 @@ test("STORE-002: Filter amount display right amount of items", async ({
       value = parseInt(numn[0]);
     }
 
-    if (await loader.isVisible()) {
-      await loader.waitFor({ state: "hidden" });
-    }
+    const exactAmountOfProducts = await catalogItem.all();
 
-    const exactAmounOfProducts = await catalogItem.all();
-
-    expect(value).toBe(exactAmounOfProducts.length);
+    expect(value).toBe(exactAmountOfProducts.length);
 
     await element.click();
   }
@@ -73,8 +72,10 @@ test("STORE-003: Title from item preview match with titles on the item page", as
     .first()
     .innerText();
 
+  await catalogItem.first().waitFor({ state: "visible" });
   await catalogItem.first().click();
 
+  await bradCrumb.waitFor();
   await expect(bradCrumb).toContainText(itemTitile, { ignoreCase: true });
   await expect(itemTitle).toContainText(itemTitile, { ignoreCase: true });
 });
@@ -110,9 +111,11 @@ test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
   let defaultAmountOfNeededItems = 1;
 
   await page.goto("https://teststore.automationtesting.co.uk");
-
+  await itemOnHomePage.first().waitFor();
   await itemOnHomePage.first().click();
-  await page.reload();
+
+  await addToCartBtn.waitFor({ state: "visible" });
+
   const waitForModalResponse1 = page.waitForResponse((response) =>
     response.url().includes("controller")
   );
@@ -120,7 +123,7 @@ test("STORE-005. Increase item quantity +1 in cart", async ({ page }) => {
   await addToCartBtn.click();
   await waitForModalResponse1;
 
-  await modalAfterAddingItem.waitFor();
+  await modalAfterAddingItem.waitFor({ state: "visible" });
 
   await closeModalBtn.waitFor();
   await closeModalBtn.click();
@@ -157,8 +160,11 @@ test("STORE-006. Decrease item quantity -1 in cart", async ({ page }) => {
   let defaultAmountOfNeededItems = 1;
 
   await page.goto("https://teststore.automationtesting.co.uk");
+  await itemOnHomePage.first().waitFor();
 
   await itemOnHomePage.first().click();
+
+  await increaseAmountOfAddedItems.waitFor();
   await increaseAmountOfAddedItems.click();
   defaultAmountOfNeededItems += 1;
 
@@ -172,11 +178,12 @@ test("STORE-006. Decrease item quantity -1 in cart", async ({ page }) => {
   const amountOfAddedItem = await amountOfAddedItemInCart.getAttribute("value");
   expect(amountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
 
-  await decreaseAmountOfAddedItems.click();
-  defaultAmountOfNeededItems -= 1;
   const waitTillNeededResponse = page.waitForResponse(
     RegExp("^.*\\action=refresh\\b.*$")
   );
+  await decreaseAmountOfAddedItems.click();
+  defaultAmountOfNeededItems -= 1;
+
   await waitTillNeededResponse;
   const increasedAmountOfAddedItem = await amountOfAddedItemInCart.getAttribute(
     "value"
@@ -201,10 +208,13 @@ test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
 
   await page.goto("https://teststore.automationtesting.co.uk");
   await itemOnHomePage.first().waitFor();
+  // await expect(itemOnHomePage.first()).toBeVisible();
   await itemOnHomePage.first().click();
-  await addToCartBtn.waitFor();
 
-  await page.reload();
+  await addToCartBtn.waitFor();
+  // await expect(addToCartBtn).toBeVisible();
+
+  // await page.reload();
   const waitForModalResponse1 = page.waitForResponse((response) =>
     response.url().includes("controller")
   );
@@ -212,7 +222,7 @@ test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
   await addToCartBtn.click();
   const response1 = await waitForModalResponse1;
 
-  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await modalAfterAddingItem.waitFor({ state: "attached" });
   await closeModalBtn.click();
   await page.goto("https://teststore.automationtesting.co.uk");
 
@@ -220,10 +230,13 @@ test("STORE-007. Delete all 2 items from the cart", async ({ page }) => {
   const waitForModalResponse2 = page.waitForResponse((response) =>
     response.url().includes("fc=module&module=ps_shoppingcart&controller")
   );
+  await expect(addToCartBtn).toBeVisible();
   await addToCartBtn.click();
-  const response2 = await waitForModalResponse2;
+  await waitForModalResponse2;
 
   await modalAfterAddingItem.waitFor({ state: "visible" });
+  // await expect(modalAfterAddingItem).toBeVisible();
+
   await closeModalBtn.click();
   await cartBtn.click();
 
@@ -277,44 +290,150 @@ test("STORE-008. Cart logo has indicator of items in cart", async ({
   let expectedCartCounterValue = 1;
 
   await page.goto("https://teststore.automationtesting.co.uk");
-
+  await itemOnHomePage.first().waitFor();
   await itemOnHomePage.first().click();
-
-  await page.reload();
 
   await addToCartBtn.waitFor({ state: "visible" });
 
-  await addToCartBtn.click();
+  const waitForModalResponse1 = page.waitForResponse((response) =>
+    response.url().includes("controller")
+  );
 
-  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await addToCartBtn.click();
+  await waitForModalResponse1;
+
+  await modalAfterAddingItem.waitFor({ state: "attached" });
+
   await closeModalBtn.click();
 
   expect(await cartItemsCounter.innerText()).toContain(
     `${expectedCartCounterValue}`
   );
 
+  await neededItemOnItemPage.waitFor();
   await neededItemOnItemPage.fill("3");
 
   await addToCartBtn.click();
+
+  await modalAfterAddingItem.waitFor();
   await closeModalBtn.click();
+
   expectedCartCounterValue += 3;
 
-  await page.reload();
-
+  // await page.reload();
+  await expect(cartItemsCounter).toBeVisible();
   expect(await cartItemsCounter.innerText()).toContain(
     `${expectedCartCounterValue}`
   );
 });
 
-// loginUser("Fixture check", async ({ shopPages }) => {
-//   const proposedItemInSearch = shopPages.page.locator(".ui-menu-item");
-//   const searchInput = shopPages.page.locator('[aria-label="Search"]');
-//   const searchRequest = "frame ";
+async function fillOrderForm(page, orderData: Record<string, string>) {
+  if (orderData) {
+    for (const [key, value] of Object.entries(orderData)) {
+      if (value === "true") {
+        await page.getByLabel(key).click();
+        continue;
+      }
+      if (key === "testTitle" || value === "false") {
+        continue;
+      }
+      if (key === "State") {
+        await page.getByLabel(key).selectOption(value);
+        continue;
+      }
+      if (key === "Address") {
+        await page.locator("#field-address1").click();
+        await page.locator("#field-address1").fill(value);
+        continue;
+      }
 
-//   await searchInput.fill(searchRequest);
+      await page.getByLabel(key).click();
+      await page.getByLabel(key).fill(value);
+    }
+  }
+}
 
-//   await proposedItemInSearch.first().waitFor({ state: "visible" });
-// });
+for (let inputData of testData) {
+  test(`STORE-009:User registration with ${inputData.testTitle} registration data`, async ({
+    page,
+  }) => {
+    // const signInLink = page.locator(".user-info a");
+    const signInLink = page.locator(".user-info .hidden-sm-down");
+    const createAccLink = page.locator(".no-account a");
+    const saveUserBtn = page.locator('[data-link-action="save-customer"]');
+    const accNameWhenLogin = page.locator("#_desktop_user_info");
+
+    await page.goto("https://teststore.automationtesting.co.uk");
+
+    await signInLink.waitFor();
+    await signInLink.click();
+
+    await createAccLink.waitFor();
+    await createAccLink.click();
+
+    await fillOrderForm(page, inputData);
+    const waitForModalResponse1 = page.waitForResponse((response) =>
+      response.url().includes("module=blockwishlist&controller=action")
+    );
+    await saveUserBtn.click();
+    await waitForModalResponse1;
+    const accNameee = page.locator('[title="View my customer account"]');
+    await expect(accNameee).toBeVisible({ timeout: 10_000 });
+
+    await expect(accNameWhenLogin).toContainText(inputData["First name"]);
+    if (inputData["Last name"].length > 3) {
+      await expect(accNameWhenLogin).toContainText(inputData["Last name"]);
+    }
+  });
+}
+
+loginUser("STORE-010: Order item", async ({ shopPages }) => {
+  const proceedToCheckoutBtn = shopPages.page.locator(".checkout .btn");
+
+  const itemOnHomePage = shopPages.page.locator(".product-thumbnail img");
+
+  const addToCartBtn = shopPages.page.locator(".product-quantity .add");
+
+  const modalAfterAddingItem = shopPages.page.locator(
+    "#blockcart-modal .modal-header"
+  );
+  const closeModalBtn = shopPages.page.locator("#blockcart-modal .close");
+  const cartBtn = shopPages.page.locator("#_desktop_cart");
+
+  const continueBtn = shopPages.page.locator("#delivery-address .continue.btn");
+
+  await shopPages.page.goto("https://teststore.automationtesting.co.uk");
+  await itemOnHomePage.first().waitFor();
+  await itemOnHomePage.first().click();
+  await addToCartBtn.waitFor();
+
+  await shopPages.page.reload();
+  const waitForModalResponse1 = shopPages.page.waitForResponse((response) =>
+    response.url().includes("controller")
+  );
+
+  await addToCartBtn.click();
+  const response1 = await waitForModalResponse1;
+  await modalAfterAddingItem.waitFor({ state: "visible" });
+  await closeModalBtn.click();
+  await cartBtn.click();
+
+  await shopPages.page
+    .locator(".cart-overview.js-cart")
+    .waitFor({ state: "visible" });
+
+  await proceedToCheckoutBtn.click();
+
+  const orderInfo = {
+    Address: "ul Lili 12",
+    City: "Chichi",
+    Zip: "01123",
+    State: "Hawaii",
+  };
+
+  await fillOrderForm(shopPages.page, orderInfo);
+  await continueBtn.click();
+});
 
 // test("Check login", async ({ browser }) => {
 //   const requestContext = await request.newContext();
@@ -346,7 +465,7 @@ test("STORE-008. Cart logo has indicator of items in cart", async ({
 //       form: {
 //         firstname: "Super",
 //         lastname: "Mommy",
-//         email: "superDady1@who.com",
+//         email: "superDadysadas1@who.com",
 //         password: "Qwerty123!",
 //         psgdpr: 1,
 //         submitCreate: 1,
