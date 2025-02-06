@@ -1,10 +1,19 @@
 import { test, request } from "@playwright/test";
-import { BasePage } from "../pages/BasePage";
 import dataGenerator from "../utils/testData/dataGenerator";
+import { PageHolder } from "../pages/PageHolder";
 
 type ShopPages = {
-  shopPages: BasePage;
+  shopPages: PageHolder;
 };
+export const guest = test.extend<ShopPages>({
+  shopPages: async ({ page }, use) => {
+    const shopPages = new PageHolder(page);
+
+    await shopPages.base.goTo();
+
+    await use(shopPages);
+  },
+});
 
 export const loginUser = test.extend<ShopPages>({
   shopPages: async ({ browser }, use) => {
@@ -31,7 +40,8 @@ export const loginUser = test.extend<ShopPages>({
       storageState: savedStorageState,
     });
     const page = await context.newPage();
-    const testMart = new BasePage(page);
-    await use(testMart);
+    const shopPages = new PageHolder(page);
+
+    await use(shopPages);
   },
 });
