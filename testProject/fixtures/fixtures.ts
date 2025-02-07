@@ -10,6 +10,7 @@ export const guest = test.extend<ShopPages>({
     const shopPages = new PageHolder(page);
 
     await shopPages.base.goTo();
+    await shopPages.page.waitForLoadState();
 
     await use(shopPages);
   },
@@ -41,6 +42,9 @@ export const loginUser = test.extend<ShopPages>({
     });
     const page = await context.newPage();
     const shopPages = new PageHolder(page);
+
+    await shopPages.base.goTo();
+    await shopPages.page.waitForLoadState();
 
     await use(shopPages);
   },

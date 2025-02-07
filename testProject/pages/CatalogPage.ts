@@ -3,10 +3,14 @@ import { BasePage } from "./BasePage";
 
 export class CatalogPage {
   protected page: Page;
+  private basePage: BasePage;
   itemDescriptionLocator: Locator;
   compositionFiltersLocator: Locator;
   amountOfItemsForExactFilter: Locator;
-  private basePage: BasePage;
+  filterCheckbox: Locator;
+  async getFilterCheckbox(filterLocator) {
+    return await filterLocator.locator("//*[@class='custom-checkbox']");
+  }
 
   constructor(page: Page) {
     this.page = page;
@@ -15,18 +19,20 @@ export class CatalogPage {
     this.compositionFiltersLocator = page.locator(
       '//*[contains(text(), "Composition")]//following-sibling::ul//li'
     );
+    this.filterCheckbox = page.locator("//*[@class='custom-checkbox']");
   }
 
   async openItem(itemOrder: number = 0) {
+    await this.page.waitForLoadState('load');
     await this.itemDescriptionLocator.nth(itemOrder).waitFor();
     await this.itemDescriptionLocator.nth(itemOrder).click();
+    await this.page.waitForLoadState("load");
   }
 
   async returnAllItemsDescriptionOnPage() {
     await this.itemDescriptionLocator.last().waitFor();
     return await this.itemDescriptionLocator.all();
   }
-
 
   async setFilter(filterToActivate) {
     await filterToActivate.waitFor();
@@ -49,10 +55,19 @@ export class CatalogPage {
 
   async compareAmountItemsOnPageAndOnFilter(filterOptions) {
     for (const testFilter of await filterOptions) {
+      const filterCheckbox = await this.getFilterCheckbox(testFilter);
+
+      await this.page.waitForLoadState("load");
       await testFilter.waitFor();
-      await testFilter.click();
+      const waitTillNeededResponse = this.page.waitForResponse(
+        RegExp("^.*\\module=productcomments&controller=CommentGrade\\b.*$")
+      )
+      await filterCheckbox.click();
+      await expect(await filterCheckbox).toBeChecked({ timeout: 20_000 });
+      await waitTillNeededResponse;
 
       await this.basePage.loaderHandler();
+      await this.page.waitForLoadState("load");
 
       const itemsForFilter = await this.returnItemAmountForFilter(
         await testFilter
@@ -63,7 +78,10 @@ export class CatalogPage {
 
       expect(itemsForFilter).toBe(exactAmountOfProducts.length);
 
-      await testFilter.click();
+      await filterCheckbox.click();
+
+      await this.basePage.loaderHandler();
+      await this.page.waitForLoadState("load");
     }
   }
 }

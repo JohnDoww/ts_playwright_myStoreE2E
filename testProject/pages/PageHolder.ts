@@ -3,6 +3,9 @@ import { BasePage } from "./BasePage";
 import { CatalogPage } from "./CatalogPage";
 import { ItemPage } from "./ItemPage";
 import { CartPage } from "./CartPage";
+import { OrderPage } from "./OrderPage";
+import { UserRegistrationPage } from "./UserRegistrationPage";
+import { UserPage } from "./UserPage";
 
 export class PageHolder {
   page: Page;
@@ -10,6 +13,9 @@ export class PageHolder {
   catalog: CatalogPage;
   item: ItemPage;
   cart: CartPage;
+  order: OrderPage;
+  userRegistration: UserRegistrationPage;
+  user: UserPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,5 +23,8 @@ export class PageHolder {
     this.catalog = new CatalogPage(page);
     this.item = new ItemPage(page);
     this.cart = new CartPage(page);
+    this.order = new OrderPage(page);
+    this.userRegistration = new UserRegistrationPage(page);
+    this.user = new UserPage(page);
   }
 }

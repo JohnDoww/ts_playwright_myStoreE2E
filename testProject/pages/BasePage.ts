@@ -9,7 +9,9 @@ export class BasePage {
   searchLocator: Locator;
 
   cartBtn: Locator;
-  // inCartCounterLocator: Locator;
+  inCartCounterLocator: Locator;
+
+  signInLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -18,8 +20,10 @@ export class BasePage {
     this.proposedItemsInSearchLocator = page.locator(".ui-menu-item");
     this.searchLocator = page.locator('[aria-label="Search"]');
     this.cartBtn = page.locator("#_desktop_cart");
+    this.inCartCounterLocator = page.locator(".header .cart-products-count");
 
-    // this.inCartCounterLocator = page.locator();
+    // this.signInLink = page.locator(".user-info a");
+    this.signInLink = page.locator(".user-info .hidden-sm-down");
   }
 
   async goTo(url: string = "/") {
@@ -32,14 +36,14 @@ export class BasePage {
   }
 
   async searchForItem(searchRequest: string) {
+    
     await this.fillInSearch(searchRequest);
     await this.page.keyboard.press("Enter");
   }
 
   async loaderHandler() {
-    await this.loaderLocator.isVisible(); // added
     if (await this.loaderLocator.isVisible()) {
-      await this.loaderLocator.waitFor({ state: "hidden" });
+      await this.loaderLocator.waitFor({ state: 'detached' });
     }
   }
 
@@ -49,17 +53,45 @@ export class BasePage {
   }
 
   async returnAllLocators(locator) {
-    await locator.last().waitFor();
+    // await locator.first().waitFor();
 
     const allSectionLocators = await locator.all();
 
     return allSectionLocators;
   }
 
-  async goToCart(){
+  async goToCart() {
     await this.cartBtn.waitFor();
     await this.cartBtn.click();
   }
 
+  async fillForm(orderData: Record<string, string>) {
+    if (orderData) {
+      for (const [key, value] of Object.entries(orderData)) {
+        // handle checboxes
+        if (value === "true") {
+          await this.page.getByLabel(key).click();
+          continue;
+        }
+        // handle item names
+        if (key === "testTitle" || value === "false") {
+          continue;
+        }
+        // handle state dropdown
+        if (key === "State") {
+          await this.page.getByLabel(key).selectOption(value);
+          continue;
+        }
+        // handle Address field
+        if (key === "Address") {
+          await this.page.locator("#field-address1").click();
+          await this.page.locator("#field-address1").fill(value);
+          continue;
+        }
 
+        await this.page.getByLabel(key).click();
+        await this.page.getByLabel(key).fill(value);
+      }
+    }
+  }
 }
