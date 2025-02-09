@@ -11,9 +11,9 @@ export class AddedItemModalComponent {
     this.title = page.locator("#blockcart-modal.in");
     this.closeBtn = page.locator("#blockcart-modal .close");
   }
-  
-  async clickOnClose(){
-    await this.closeBtn.waitFor({state:"visible"});
+
+  async clickOnClose() {
+    await this.closeBtn.waitFor({ state: "visible" });
     await this.closeBtn.click();
   }
 }

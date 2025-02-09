@@ -9,7 +9,7 @@ export class UserIndicatorComponent {
     this.signInLink = page.locator(".user-info .hidden-sm-down");
   }
 
-  async clickSignIn(){
+  async clickSignIn() {
     await this.signInLink.waitFor();
     await this.signInLink.click();
   }

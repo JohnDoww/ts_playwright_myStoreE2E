@@ -10,6 +10,12 @@ import { BreadCrumbsComponent } from "../components/BreadCrumbsComponent";
 import { ItemDescriptionComponent } from "../components/ItemDescriptionComponent";
 import { AddedItemModalComponent } from "../components/AddedItemModalComponent";
 import { ItemAmountManagerComponent } from "../components/ItemAmountManagerComponent";
+import { FilterSectionsComponent } from "../components/FilterSectionsComponent";
+import { CartSummaryComponent } from "../components/CartSummaryComponent";
+import { OrderDeliveryFormComponent } from "../components/OrderDeliveryFormComponent";
+import { ShippingMethodComponent } from "../components/ShippingMethodComponent";
+import { PaymentFormComponent } from "../components/PaymentFormComponent";
+import { OrderConfirmedComponent } from "../components/OrderConfirmedComponent";
 export class BasePage {
   protected page: Page;
   searchComp: SearchComponent;
@@ -23,6 +29,12 @@ export class BasePage {
   itemDescComp: ItemDescriptionComponent;
   modalAfterItemAddComp: AddedItemModalComponent;
   itemAmountManagerComp: ItemAmountManagerComponent;
+  filterSectionsComp: FilterSectionsComponent;
+  cartSummaryComp: CartSummaryComponent;
+  orderDeliveryFromComp: OrderDeliveryFormComponent;
+  shippingMethodComp: ShippingMethodComponent;
+  paymentFormComp: PaymentFormComponent;
+  orderConfirmedComp: OrderConfirmedComponent;
 
   constructor(page: Page) {
     this.page = page;
@@ -37,6 +49,12 @@ export class BasePage {
     this.itemDescComp = new ItemDescriptionComponent(page);
     this.modalAfterItemAddComp = new AddedItemModalComponent(page);
     this.itemAmountManagerComp = new ItemAmountManagerComponent(page);
+    this.filterSectionsComp = new FilterSectionsComponent(page);
+    this.cartSummaryComp = new CartSummaryComponent(page);
+    this.orderDeliveryFromComp = new OrderDeliveryFormComponent(page);
+    this.shippingMethodComp = new ShippingMethodComponent(page);
+    this.paymentFormComp = new PaymentFormComponent(page);
+    this.orderConfirmedComp = new OrderConfirmedComponent(page);
   }
 
   async goTo(url: string = "/") {
@@ -70,7 +88,7 @@ export class BasePage {
   async fillForm(orderData: Record<string, string>) {
     if (orderData) {
       for (const [key, value] of Object.entries(orderData)) {
-        // handle checboxes
+        // handle checkboxes
         if (value === "true") {
           await this.page.getByLabel(key).click();
           continue;
@@ -124,5 +142,14 @@ export class BasePage {
 
   async clickSignInLink() {
     await this.userIndicatorComp.clickSignIn();
+  }
+
+  async extractNumberFromStr(str) {
+    const extractFrom = str.match(/(\d+)/);
+    let numberAmount = 0;
+    if (Array.isArray(extractFrom)) {
+      numberAmount = parseInt(extractFrom[0]);
+    }
+    return numberAmount;
   }
 }

@@ -9,28 +9,14 @@ export class CartPage extends BasePage {
   private requestUpdatedAmount: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
 
-  amountOfAddedItemLocator: Locator;
-  addedItemLocator: Locator;
-  private removeItemFromCartBtn: Locator;
-  proceedToCheckoutBtn: Locator;
-
   constructor(page: Page) {
     super(page);
-    this.page = page;
     this.itemPage = new ItemPage(page);
-    this.amountOfAddedItemLocator = page.locator(
-      '[name="product-quantity-spin"]'
-    );
-    this.addedItemLocator = page.locator("li.cart-item");
-    this.removeItemFromCartBtn = page.locator(
-      ".remove-from-cart .material-icons"
-    );
-    this.proceedToCheckoutBtn = this.page.locator(".checkout .btn");
   }
 
   async getAmountOfAddedItem(locatorOrder: number = 0) {
-    await this.amountOfAddedItemLocator.nth(locatorOrder).waitFor();
-    return await this.amountOfAddedItemLocator
+    await this.cartSummaryComp.addedItem.nth(locatorOrder).waitFor();
+    return await this.cartSummaryComp.amountPerAddedItem
       .nth(locatorOrder)
       .getAttribute("value");
   }
@@ -44,7 +30,10 @@ export class CartPage extends BasePage {
   }
 
   async waitItemsAppearance(expectedAmount = 1) {
-    await super.waitElementsAppearance(this.addedItemLocator, expectedAmount);
+    await super.waitElementsAppearance(
+      this.cartSummaryComp.addedItem,
+      expectedAmount
+    );
   }
 
   async removeItem(itemOrder = 0) {
@@ -54,10 +43,14 @@ export class CartPage extends BasePage {
       this.requestWhenCartIsUpdated
     );
 
-    await this.removeItemFromCartBtn.nth(itemOrder).click();
+    await this.cartSummaryComp.removeItem(itemOrder);
 
     await waitUpdatingStateOfCart;
     await this.page.reload();
     await this.page.waitForLoadState("load");
+  }
+
+  async clickProceedToCheckoutBtn() {
+    await this.cartSummaryComp.clickOnProceedToCheckoutBtn();
   }
 }

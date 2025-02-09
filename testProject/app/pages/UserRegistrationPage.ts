@@ -1,4 +1,3 @@
-import { Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class UserRegistrationPage extends BasePage {

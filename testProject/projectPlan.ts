@@ -42,7 +42,7 @@
 ----------налаштований eslint config
 ----------налаштовані імпорти в tsconfig 
 ++++тестування консольних помилок
-???????????????використання композиції для роботи зі складними сторінками
+++++++використання композиції для роботи зі складними сторінками
 
 Вимоги до тестів:
 ----тести повинні мати унікальні назви і розбиті по describe блоках
@@ -57,35 +57,3 @@ final work:
 * 3 --- move some geeneral methods to heplers class and api request as well 
 * for ex: wait for response can be used as helper, also poll where we wait till all elements 
  */
-
-/////
-/// components 
-// -- base p
-// 1 searchComponnent +++++++
-// 2 cartLinkComponent ++++++
-// 3 loader++++++++++++
-// 3 userIndicatorComponent +++++++++++==
-// -- user reg page 
-// 4 registrationFormComponent+++++
-
-
-////////// 
-const a ='s';
-// -- item page 
-// 5 addToCartComponent ++++
-// 6 bradCrumbComponent+++
-// 7 OpenItemComponent+++++
-// 8 addingItemConfirmationModalComponent+++++++++
-
-// 9 itemAmountManagerComponent+++++
-// -- Catalog page
-// 10 filterSectionComponent 
-// 11 catalogItemComponent
-// -- CartPage
-// 12 cartSummaryComponent
-// -- UserPage 
-// 13 -----
-// -- OrderPage
-// 13 deliveryFormComponent
-// 14 shippingMethodComponent
-// 15 finalConfirmationComponent 

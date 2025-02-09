@@ -10,7 +10,6 @@ export class LoginPage {
     this.loginFormComp = new LoginFormComponent(page);
 
     this.userProfileLink = page.locator("#_desktop_user_info");
-    // this.createNewUserLink = page.locator(".no-account a");
   }
 
   async followToRegForm() {

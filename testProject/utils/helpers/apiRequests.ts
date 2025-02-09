@@ -2,7 +2,7 @@ import { request } from "@playwright/test";
 import dataGenerator from "../testData/dataGenerator";
 
 const endpoints = {
-  userRegistration:
+  userRegistrationUrl:
     "https://teststore.automationtesting.co.uk/index.php?controller=registration",
 };
 
@@ -10,7 +10,7 @@ export async function getNewRegUserStorageState(
   userEmail = dataGenerator.getNewEmail()
 ) {
   const requestContext = await request.newContext();
-  await requestContext.post(endpoints.userRegistration, {
+  await requestContext.post(endpoints.userRegistrationUrl, {
     form: {
       firstname: "Test",
       lastname: "User",

@@ -8,6 +8,4 @@ export class BreadCrumbsComponent {
     this.page = page;
     this.body = page.locator(".breadcrumb");
   }
-
-
 }

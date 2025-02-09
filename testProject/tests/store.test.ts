@@ -19,7 +19,8 @@ guest(
   async ({ shopPages }) => {
     await shopPages.catalog.goTo();
 
-    const neededFilterSection = shopPages.catalog.compositionFiltersLocator;
+    const neededFilterSection =
+      shopPages.base.filterSectionsComp.compositionSection;
 
     const filterOptions = await shopPages.base.returnAllLocators(
       neededFilterSection
@@ -32,7 +33,7 @@ guest(
 guest(
   "STORE-003: Title from item preview match with titles on the item page",
   async ({ shopPages }) => {
-    const itemTitle = await shopPages.catalog.itemDescriptionLocator
+    const itemTitle = await shopPages.base.itemDescComp.onMain.title
       .first()
       .innerText();
 
@@ -41,7 +42,7 @@ guest(
     await expect(shopPages.base.breadcrumbComp.body).toContainText(itemTitle, {
       ignoreCase: true,
     });
-    await expect(shopPages.base.itemDescComp.main.title).toContainText(
+    await expect(shopPages.base.itemDescComp.onMain.title).toContainText(
       itemTitle,
       {
         ignoreCase: true,
@@ -126,7 +127,7 @@ guest("STORE-007. Delete all 2 items from the cart", async ({ shopPages }) => {
   await shopPages.base.goToCart();
   await shopPages.cart.waitItemsAppearance(expectedAmountOfItemsInCart);
 
-  const itemsInCart = shopPages.cart.addedItemLocator;
+  const itemsInCart = shopPages.base.cartSummaryComp.addedItem;
   expect((await itemsInCart.all()).length).toBe(expectedAmountOfItemsInCart);
   await shopPages.cart.removeItem();
   expect((await itemsInCart.all()).length).toBe(
@@ -184,29 +185,27 @@ for (let inputData of testData) {
 }
 
 loginUser("STORE-010: Order item", async ({ shopPages }) => {
-  const proceedToCheckoutBtn = shopPages.cart.proceedToCheckoutBtn;
-  const itemTitle = shopPages.base.itemDescComp.main.title;
-  const finalSuccessMsg = shopPages.order.successOrderMsgLocator;
-  const itemInSummary = shopPages.order.itemInPayConfirmationLocator;
-
   const successOrderMsgText = "Your order is confirmed";
 
   await shopPages.catalog.openItem(4);
   await shopPages.item.addToCart();
   await shopPages.item.closeConfirmAddingModal();
 
-  const titleOfOrderedItem = await itemTitle.innerText();
+  const titleOfOrderedItem =
+    await shopPages.base.itemDescComp.onMain.title.innerText();
 
   await shopPages.base.goToCart();
-
-  await proceedToCheckoutBtn.click();
-
+  await shopPages.cart.cartSummaryComp.clickOnProceedToCheckoutBtn();
   const shippingInfo = dataGenerator.getShippingInfo();
-
   await shopPages.order.passOrderCreationForm(shippingInfo);
 
-  await expect(finalSuccessMsg).toContainText(successOrderMsgText);
-  await expect(itemInSummary).toContainText(titleOfOrderedItem, {
-    ignoreCase: true,
-  });
+  await expect(shopPages.base.orderConfirmedComp.title).toContainText(
+    successOrderMsgText
+  );
+  await expect(shopPages.base.itemDescComp.onCreatedOrder.title).toContainText(
+    titleOfOrderedItem,
+    {
+      ignoreCase: true,
+    }
+  );
 });

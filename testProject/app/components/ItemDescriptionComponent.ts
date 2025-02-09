@@ -2,21 +2,27 @@ import { Page, Locator } from "@playwright/test";
 
 export class ItemDescriptionComponent {
   protected page: Page;
-  main: {
+  onMain: {
     title: Locator;
   };
-  preview: {
+  onPreview: {
+    title: Locator;
+  };
+  onCreatedOrder: {
     title: Locator;
   };
 
   constructor(page: Page) {
     this.page = page;
 
-    this.main = {
+    this.onMain = {
       title: page.locator("h1"),
     };
-    this.preview = {
-      title: page.locator("                    "),
+    this.onPreview = {
+      title: page.locator(".product-description a"),
+    };
+    this.onCreatedOrder = {
+      title: page.locator(".order-line.row"),
     };
   }
 }
