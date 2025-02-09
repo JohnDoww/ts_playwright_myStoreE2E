@@ -1,26 +1,24 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { SearchComponent } from "../components/searchComponent";
+import { CartDisplayComponent } from "../components/CartLinkComponent";
 
 export class BasePage {
   protected page: Page;
-  searchInputLocator: Locator;
+  searchComp: SearchComponent;
+  cartDisplayComp: CartDisplayComponent;
   loaderLocator: Locator;
-
-  proposedItemsInSearchLocator: Locator;
-  searchLocator: Locator;
-
-  cartBtn: Locator;
-  inCartCounterLocator: Locator;
+  // cartBtn: Locator;
+  // inCartCounterLocator: Locator;
 
   signInLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.searchInputLocator = page.locator('[aria-label="Search"]');
+    this.searchComp = new SearchComponent(page);
+    this.cartDisplayComp = new CartDisplayComponent(page);
     this.loaderLocator = page.locator(".overlay__content");
-    this.proposedItemsInSearchLocator = page.locator(".ui-menu-item");
-    this.searchLocator = page.locator('[aria-label="Search"]');
-    this.cartBtn = page.locator("#_desktop_cart");
-    this.inCartCounterLocator = page.locator(".header .cart-products-count");
+    // this.cartBtn = page.locator("#_desktop_cart");
+    // this.inCartCounterLocator = page.locator(".header .cart-products-count");
 
     this.signInLink = page.locator(".user-info .hidden-sm-down");
   }
@@ -29,14 +27,12 @@ export class BasePage {
     await this.page.goto(url);
   }
 
-  async fillInSearch(searchRequest: string) {
-    await this.searchInputLocator.waitFor({ state: "visible" });
-    await this.searchInputLocator.fill(searchRequest);
+  async fillInSearch(searchValue: string) {
+    await this.searchComp.fillIn(searchValue);
   }
 
-  async searchForItem(searchRequest: string) {
-    await this.fillInSearch(searchRequest);
-    await this.page.keyboard.press("Enter");
+  async searchForItem(searchValue: string) {
+    await this.searchComp.findItem(searchValue);
   }
 
   async loaderHandler() {
@@ -54,9 +50,7 @@ export class BasePage {
   }
 
   async goToCart() {
-    await this.cartBtn.waitFor();
-    await this.cartBtn.click();
-    await this.page.waitForLoadState();
+    await this.cartDisplayComp.clickOnBtn();
   }
 
   async fillForm(orderData: Record<string, string>) {
