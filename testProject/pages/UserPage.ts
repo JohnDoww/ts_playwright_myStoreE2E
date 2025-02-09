@@ -1,6 +1,4 @@
-import { Locator, Page, expect } from "@playwright/test";
-import { BasePage } from "./BasePage";
-
+import { Locator, Page } from "@playwright/test";
 export class UserPage {
   protected page: Page;
   userProfileLink: Locator;

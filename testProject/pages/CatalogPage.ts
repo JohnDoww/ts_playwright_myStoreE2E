@@ -1,20 +1,25 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
-export class CatalogPage {
-  protected page: Page;
-  private basePage: BasePage;
+export class CatalogPage extends BasePage {
+  private url: string = "?id_category=2&controller=category";
+  private requestAfterApplyingFilters: string =
+    "module=productcomments&controller=CommentGrade";
   itemDescriptionLocator: Locator;
   compositionFiltersLocator: Locator;
   amountOfItemsForExactFilter: Locator;
   filterCheckbox: Locator;
-  async getFilterCheckbox(filterLocator) {
-    return await filterLocator.locator("//*[@class='custom-checkbox']");
+  getFilterCheckbox(filterLocator) {
+    return filterLocator.locator("//*[@class='custom-checkbox']");
+  }
+  getItemsQuantityForFilterLocator(filterLocator: Locator) {
+    const itemsQuantityForFilterLocator: Locator =
+      filterLocator.locator("//a//span");
+    return itemsQuantityForFilterLocator;
   }
 
   constructor(page: Page) {
-    this.page = page;
-    this.basePage = new BasePage(page);
+    super(page);
     this.itemDescriptionLocator = page.locator(".product-description a");
     this.compositionFiltersLocator = page.locator(
       '//*[contains(text(), "Composition")]//following-sibling::ul//li'
@@ -22,8 +27,12 @@ export class CatalogPage {
     this.filterCheckbox = page.locator("//*[@class='custom-checkbox']");
   }
 
+  async goTo() {
+    await super.goTo(this.url);
+  }
+
   async openItem(itemOrder: number = 0) {
-    await this.page.waitForLoadState('load');
+    await this.page.waitForLoadState("load");
     await this.itemDescriptionLocator.nth(itemOrder).waitFor();
     await this.itemDescriptionLocator.nth(itemOrder).click();
     await this.page.waitForLoadState("load");
@@ -42,9 +51,9 @@ export class CatalogPage {
   async returnItemAmountForFilter(filterLocator) {
     await filterLocator.first().waitFor();
 
-    const productsAmountOnFilter = await filterLocator
-      .locator("//a//span")
-      .innerText();
+    const productsAmountOnFilter = await this.getItemsQuantityForFilterLocator(
+      filterLocator
+    ).innerText();
     const amountAsString = productsAmountOnFilter.match(/(\d+)/);
     let numberAmount = 0;
     if (Array.isArray(amountAsString)) {
@@ -59,15 +68,16 @@ export class CatalogPage {
 
       await this.page.waitForLoadState("load");
       await testFilter.waitFor();
-      const waitTillNeededResponse = this.page.waitForResponse(
-        RegExp("^.*\\module=productcomments&controller=CommentGrade\\b.*$")
-      )
+
+      const waitTillNeededResponse = super.responseWaiter(
+        this.requestAfterApplyingFilters
+      );
+
       await filterCheckbox.click();
       await expect(await filterCheckbox).toBeChecked({ timeout: 20_000 });
       await waitTillNeededResponse;
 
-      await this.basePage.loaderHandler();
-      await this.page.waitForLoadState("load");
+      await super.loaderHandler();
 
       const itemsForFilter = await this.returnItemAmountForFilter(
         await testFilter
@@ -80,7 +90,7 @@ export class CatalogPage {
 
       await filterCheckbox.click();
 
-      await this.basePage.loaderHandler();
+      await super.loaderHandler();
       await this.page.waitForLoadState("load");
     }
   }

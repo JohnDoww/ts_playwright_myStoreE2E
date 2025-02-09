@@ -1,7 +1,7 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
 export class BasePage {
-  page: Page;
+  protected page: Page;
   searchInputLocator: Locator;
   loaderLocator: Locator;
 
@@ -22,7 +22,6 @@ export class BasePage {
     this.cartBtn = page.locator("#_desktop_cart");
     this.inCartCounterLocator = page.locator(".header .cart-products-count");
 
-    // this.signInLink = page.locator(".user-info a");
     this.signInLink = page.locator(".user-info .hidden-sm-down");
   }
 
@@ -36,24 +35,18 @@ export class BasePage {
   }
 
   async searchForItem(searchRequest: string) {
-    
     await this.fillInSearch(searchRequest);
     await this.page.keyboard.press("Enter");
   }
 
   async loaderHandler() {
     if (await this.loaderLocator.isVisible()) {
-      await this.loaderLocator.waitFor({ state: 'detached' });
+      await this.loaderLocator.waitFor({ state: "detached" });
     }
   }
 
-  async returnInnerText(locator) {
-    await locator.waitFor();
-    return await locator.innerText();
-  }
-
   async returnAllLocators(locator) {
-    // await locator.first().waitFor();
+    await locator.first().waitFor();
 
     const allSectionLocators = await locator.all();
 
@@ -63,6 +56,7 @@ export class BasePage {
   async goToCart() {
     await this.cartBtn.waitFor();
     await this.cartBtn.click();
+    await this.page.waitForLoadState();
   }
 
   async fillForm(orderData: Record<string, string>) {
@@ -93,5 +87,35 @@ export class BasePage {
         await this.page.getByLabel(key).fill(value);
       }
     }
+  }
+
+  responseWaiter(toInclude) {
+    return this.page.waitForResponse((response) =>
+      response.url().includes(toInclude)
+    );
+  }
+
+  async waitElementsAppearance(elements: Locator, neededAmount = 1) {
+    await elements.first().waitFor();
+    await expect
+      .poll(
+        async () => {
+          let visibleItem = 0;
+          for (const el of await elements.all()) {
+            if (await el.isVisible()) visibleItem++;
+          }
+          return visibleItem;
+        },
+        {
+          intervals: [500, 1_000],
+          timeout: 30_000,
+        }
+      )
+      .toBe(neededAmount);
+  }
+
+  async clickSignInLink() {
+    await this.signInLink.waitFor();
+    await this.signInLink.click();
   }
 }

@@ -1,23 +1,20 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { UserPage } from "./UserPage";
 
-export class UserRegistrationPage {
-  protected page: Page;
-  saveNewUserBtn: Locator;
-  protected basePage: BasePage;
+export class UserRegistrationPage extends BasePage {
   protected userPage: UserPage;
+  saveNewUserBtn: Locator;
+  private partOfRequestAfterFormSubmit: string = "controller=action";
 
   constructor(page: Page) {
-    this.page = page;
-    this.saveNewUserBtn = page.locator('[data-link-action="save-customer"]');
-    this.basePage = new BasePage(page);
+    super(page);
     this.userPage = new UserPage(page);
+    this.saveNewUserBtn = page.locator('[data-link-action="save-customer"]');
   }
 
   async openNewUserRegistrationPage() {
-    await this.basePage.signInLink.waitFor();
-    await this.basePage.signInLink.click();
+    await super.clickSignInLink();
 
     await this.userPage.createNewUserLink.waitFor();
     await this.userPage.createNewUserLink.click();
@@ -28,9 +25,10 @@ export class UserRegistrationPage {
   async submitRegistrationForm() {
     await this.saveNewUserBtn.waitFor();
 
-    const waitForModalResponse1 = this.page.waitForResponse((response) =>
-      response.url().includes("controller=action")
+    const waitForModalResponse1 = super.responseWaiter(
+      this.partOfRequestAfterFormSubmit
     );
+
     await this.saveNewUserBtn.click();
     await waitForModalResponse1;
   }

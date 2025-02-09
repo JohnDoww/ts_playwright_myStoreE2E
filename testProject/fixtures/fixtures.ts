@@ -1,6 +1,6 @@
-import { test, request } from "@playwright/test";
-import dataGenerator from "../utils/testData/dataGenerator";
+import { test } from "@playwright/test";
 import { PageHolder } from "../pages/PageHolder";
+import { getNewRegUserStorageState } from "../utils/helpers/apiRequests";
 
 type ShopPages = {
   shopPages: PageHolder;
@@ -18,24 +18,7 @@ export const guest = test.extend<ShopPages>({
 
 export const loginUser = test.extend<ShopPages>({
   shopPages: async ({ browser }, use) => {
-    //convert to method
-    const requestContext = await request.newContext();
-    await requestContext.post(
-      "https://teststore.automationtesting.co.uk/index.php?controller=registration",
-
-      {
-        form: {
-          firstname: "Test",
-          lastname: "User",
-          email: dataGenerator.getNewEmail(),
-          password: "Qwerty123!",
-          psgdpr: 1,
-          submitCreate: 1,
-        },
-      }
-    );
-
-    const savedStorageState = await requestContext.storageState();
+    const savedStorageState = await getNewRegUserStorageState();
 
     const context = await browser.newContext({
       storageState: savedStorageState,

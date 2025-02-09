@@ -1,5 +1,3 @@
-
-
 /**
 
  * 
@@ -31,27 +29,56 @@
  * 
  * 
 Обовʼязково повинно бути використанні:
-фікстури 
-налаштований playwright.config.ts 
-pageobject для сторінок і модальних вікон (мінімум 5) 
-цикли, if  повинні бути використанні
-використання DDT (параметризації)  підходу мінімум в одному тесті
-перевірка network request (хоча б одна)
-тести повинні виконуватись на github actions
++++фікстури +++++++++++++++
++++налаштований playwright.config.ts ++++++++
++++pageobject для сторінок і модальних вікон +++(мінімум 5) +++++++++++++++++++
++++цикли, if  повинні бути використанні+++++
++++++використання DDT (параметризації)  підходу +++++мінімум в одному тесті
++++перевірка network request (хоча б одна)
++++тести повинні виконуватись на github actions
 
 Непогано б було зробити: 
-збереження сесії юзера і робота з кукі
-налаштований eslint config
-налаштовані імпорти в tsconfig 
-тестування консольних помилок
-використання композиції для роботи зі складними сторінками
++++збереження сесії юзера і робота з кукі
+----------налаштований eslint config
+----------налаштовані імпорти в tsconfig 
+++++тестування консольних помилок
+???????????????використання композиції для роботи зі складними сторінками
 
 Вимоги до тестів:
-тести повинні мати унікальні назви і розбиті по describe блоках
-використовуйте test.step щоб зробити тести більш читабельними і підвищити читабельність репорту 
-тести повинні мати високорівневий код, ніяких locator, page, new…, for(), if(), console.log  в тестах не повинно бути 
-використання expect в середині тесту, або в середині pageObject на ваш вибір (враховуйте цю специфіку під час дизайну pageObject (локатори приватні, або публічні)).
+----тести повинні мати унікальні назви і розбиті по describe блоках
+-----використовуйте test.step щоб зробити тести більш читабельними і підвищити читабельність репорту 
+++++++тести повинні мати високорівневий код, +++ніяких locator, page, new…, for(), if(), ++++console.log  в тестах не повинно бути 
++++використання expect в середині тесту, або в +++середині pageObject на ваш вибір (враховуйте +++++цю специфіку під час дизайну pageObject -----(локатори приватні, або публічні)).
 
- * add readme file 
-
+final work:
+ * 1 ---- add readme file 
+* 2 ---- add incapsulation where it's needed 
+* 3 --- move some geeneral methods to heplers class and api request as well 
+* for ex: wait for response can be used as helper, also poll where we wait till all elements 
  */
+
+/////
+/// components 
+// -- base p
+// 1 searchComponnent 
+// 2 cartLinkComponent
+// 3 userIndicatorComponent
+// -- user reg page 
+// 4 registrationFormComponent
+// -- item page 
+// 5 addToCartComponent 
+// 6 bradCrumbComponent
+// 7 itemDescriptionComponent
+// 8 addingItemConfirmationModalComponent
+// 9 itemAmountManagerComponent
+// -- Catalog page
+// 10 filterSectionComponent 
+// 11 catalogItemComponent
+// -- CartPage
+// 12 cartSummaryComponent
+// -- UserPage 
+// 13 -----
+// -- OrderPage
+// 14 deliveryFormComponent
+// 15 shippingMethodComponent
+// 16 finalConfirmationComponent 

@@ -17,7 +17,7 @@ guest("STORE-001: Found items contain search world", async ({ shopPages }) => {
 guest(
   "STORE-002: Filter amount display right amount of items",
   async ({ shopPages }) => {
-    await shopPages.base.goTo("?id_category=2&controller=category");
+    await shopPages.catalog.goTo();
 
     const neededFilterSection = shopPages.catalog.compositionFiltersLocator;
 
@@ -32,9 +32,9 @@ guest(
 guest(
   "STORE-003: Title from item preview match with titles on the item page",
   async ({ shopPages }) => {
-    const itemTitle = await shopPages.base.returnInnerText(
-      shopPages.catalog.itemDescriptionLocator.first()
-    );
+    const itemTitle = await shopPages.catalog.itemDescriptionLocator
+      .first()
+      .innerText();
 
     await shopPages.catalog.openItem();
 
@@ -118,10 +118,10 @@ guest("STORE-007. Delete all 2 items from the cart", async ({ shopPages }) => {
   await shopPages.catalog.openItem(3);
   await shopPages.item.addToCart();
   expectedAmountOfItemsInCart += 1;
-  // await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeAddingConfirmModal();
 
   await shopPages.base.goToCart();
-  await shopPages.cart.waitTillItemsAppearance(expectedAmountOfItemsInCart);
+  await shopPages.cart.waitItemsAppearance(expectedAmountOfItemsInCart);
 
   const itemsInCart = shopPages.cart.addedItemLocator;
   expect((await itemsInCart.all()).length).toBe(expectedAmountOfItemsInCart);
@@ -142,19 +142,15 @@ guest(
 
     await shopPages.catalog.openItem();
     await shopPages.item.addToCart();
-
     await shopPages.item.closeAddingConfirmModal();
 
     expect(await cartItemsCounter.innerText()).toContain(
       `${expectedCartCounterValue}`
     );
 
-    await shopPages.item.addNeededAmountOfItemsByInput(3);
-
-    // await shopPages.item.closeAddingConfirmModal();
-    await shopPages.base.goTo();
-
-    expectedCartCounterValue += 3;
+    await shopPages.item.addToCart();
+    await shopPages.item.closeAddingConfirmModal();
+    expectedCartCounterValue += 1;
 
     await expect(cartItemsCounter).toBeVisible();
     expect(await cartItemsCounter.innerText()).toContain(
@@ -196,11 +192,9 @@ loginUser("STORE-010: Order item", async ({ shopPages }) => {
   await shopPages.item.addToCart();
   await shopPages.item.closeAddingConfirmModal();
 
-
   const titleOfOrderedItem = await itemTitle.innerText();
 
   await shopPages.base.goToCart();
-
 
   await proceedToCheckoutBtn.click();
 
