@@ -66,9 +66,13 @@ final work:
 // 3 loader++++++++++++
 // 3 userIndicatorComponent +++++++++++==
 // -- user reg page 
-// 4 registrationFormComponent
+// 4 registrationFormComponent+++++
+
+
+////////// 
+const a ='s';
 // -- item page 
-// 5 addToCartComponent 
+// 5 addToCartComponent ++++
 // 6 bradCrumbComponent
 // 7 itemDescriptionComponent
 // 8 addingItemConfirmationModalComponent

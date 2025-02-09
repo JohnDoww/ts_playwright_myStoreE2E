@@ -6,7 +6,6 @@ export class ItemPage extends BasePage {
   bradCrumbLocator: Locator;
   itemTitleLocator: Locator;
 
-  addToCartBtn: Locator;
   modalTitleAfterAddingItemLocator: Locator;
   closeModalBtn: Locator;
 
@@ -15,14 +14,13 @@ export class ItemPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.bradCrumbLocator = page.locator(".breadcrumb");
-    this.itemTitleLocator = page.locator("h1");
-    this.addToCartBtn = page.locator(".product-add-to-cart .add");
+    // this.bradCrumbLocator = page.locator(".breadcrumb");
+    // this.itemTitleLocator = page.locator("h1");
 
-    this.modalTitleAfterAddingItemLocator = this.page.locator(
-      "#blockcart-modal.in"
-    );
-    this.closeModalBtn = page.locator("#blockcart-modal .close");
+    // this.modalTitleAfterAddingItemLocator = this.page.locator(
+    //   "#blockcart-modal.in"
+    // );
+    // this.closeModalBtn = page.locator("#blockcart-modal .close");
 
     this.increaseItemAmountLocator = page.locator(".bootstrap-touchspin-up");
     this.decreaseItemAmountLocator = page.locator(".bootstrap-touchspin-down");
@@ -30,13 +28,12 @@ export class ItemPage extends BasePage {
 
   async addToCart() {
     await this.page.waitForLoadState("load");
-    await this.addToCartBtn.waitFor();
 
     const waitForModalAppearing = super.responseWaiter(
       this.partOfRequestModalAppearing
     );
 
-    await this.addToCartBtn.click();
+    await this.addToCartComp.clickOn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }

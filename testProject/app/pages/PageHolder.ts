@@ -5,8 +5,7 @@ import { ItemPage } from "./ItemPage";
 import { CartPage } from "./CartPage";
 import { OrderPage } from "./OrderPage";
 import { UserRegistrationPage } from "./UserRegistrationPage";
-import { UserPage } from "./UserPage";
-
+import { LoginPage } from "./LoginPage";
 export class PageHolder {
   page: Page;
   base: BasePage;
@@ -15,7 +14,7 @@ export class PageHolder {
   cart: CartPage;
   order: OrderPage;
   userRegistration: UserRegistrationPage;
-  user: UserPage;
+  login: LoginPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,6 +24,6 @@ export class PageHolder {
     this.cart = new CartPage(page);
     this.order = new OrderPage(page);
     this.userRegistration = new UserRegistrationPage(page);
-    this.user = new UserPage(page);
+    this.login = new LoginPage(page);
   }
 }

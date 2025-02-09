@@ -2,12 +2,15 @@ import { Locator, Page } from "@playwright/test";
 
 export class RegistrationFormComponent {
   protected page: Page;
-  private signInLink: Locator;
+  private saveUserBtn: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.signInLink = page.locator(".user-info .hidden-sm-down");
+    this.saveUserBtn = page.locator('[data-link-action="save-customer"]');
   }
 
-//   async 
+  async clickSaveNewUserBtn() {
+    await this.saveUserBtn.waitFor();
+    await this.saveUserBtn.click();
+  }
 }

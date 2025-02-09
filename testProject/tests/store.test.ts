@@ -163,7 +163,7 @@ for (let inputData of testData) {
   guest(
     `STORE-009:User registration with ${inputData.testTitle} registration data`,
     async ({ shopPages }) => {
-      const userIndicatorWhenLogin = shopPages.user.userProfileLink;
+      const userIndicatorWhenLogin = shopPages.login.userProfileLink;
 
       await shopPages.userRegistration.openNewUserRegistrationPage();
       await shopPages.base.fillForm(inputData);

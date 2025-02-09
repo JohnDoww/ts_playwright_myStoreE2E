@@ -3,12 +3,19 @@ import { SearchComponent } from "../components/SearchComponent";
 import { CartDisplayComponent } from "../components/CartDisplayComponent";
 import { LoaderComponent } from "../components/LoaderComponent";
 import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
+import { RegistrationFormComponent } from "../components/RegistrationFormComponent";
+import { LoginFormComponent } from "../components/LoginFormComponent";
+import { AddToCartComponent } from "../components/AddToCartComponent";
 export class BasePage {
   protected page: Page;
   searchComp: SearchComponent;
   cartDisplayComp: CartDisplayComponent;
   loaderComp: LoaderComponent;
   userIndicatorComp: UserIndicatorComponent;
+  logFormComp: LoginFormComponent;
+  regFormComp: RegistrationFormComponent;
+  addToCartComp: AddToCartComponent;
+  // breadcrumbComp: BreadCrumbComponent;
 
   constructor(page: Page) {
     this.page = page;
@@ -16,6 +23,10 @@ export class BasePage {
     this.cartDisplayComp = new CartDisplayComponent(page);
     this.loaderComp = new LoaderComponent(page);
     this.userIndicatorComp = new UserIndicatorComponent(page);
+    this.logFormComp = new LoginFormComponent(page);
+    this.regFormComp = new RegistrationFormComponent(page);
+    this.addToCartComp = new AddToCartComponent(page);
+    // this.breadcrumbComp = new BreadCrumbComponent(page)
   }
 
   async goTo(url: string = "/") {
