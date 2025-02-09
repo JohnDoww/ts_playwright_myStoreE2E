@@ -38,12 +38,15 @@ guest(
 
     await shopPages.catalog.openItem();
 
-    await expect(shopPages.item.bradCrumbLocator).toContainText(itemTitle, {
+    await expect(shopPages.base.breadcrumbComp.body).toContainText(itemTitle, {
       ignoreCase: true,
     });
-    await expect(shopPages.item.itemTitleLocator).toContainText(itemTitle, {
-      ignoreCase: true,
-    });
+    await expect(shopPages.base.itemDescComp.main.title).toContainText(
+      itemTitle,
+      {
+        ignoreCase: true,
+      }
+    );
   }
 );
 
@@ -68,7 +71,7 @@ guest("STORE-005. Increase item quantity +1 in cart", async ({ shopPages }) => {
 
   await shopPages.catalog.openItem();
   await shopPages.item.addToCart();
-  await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeConfirmAddingModal();
   await shopPages.base.goToCart();
 
   const amountOfAddedItem = await shopPages.cart.getAmountOfAddedItem();
@@ -92,7 +95,7 @@ guest("STORE-006. Decrease item quantity -1 in cart", async ({ shopPages }) => {
   amountOfItem += 1;
 
   await shopPages.item.addToCart();
-  await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeConfirmAddingModal();
   await shopPages.base.goToCart();
 
   let amountOfAddedItem = await shopPages.cart.getAmountOfAddedItem();
@@ -111,14 +114,14 @@ guest("STORE-007. Delete all 2 items from the cart", async ({ shopPages }) => {
   await shopPages.catalog.openItem();
   await shopPages.item.addToCart();
   expectedAmountOfItemsInCart += 1;
-  await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeConfirmAddingModal();
 
   await shopPages.base.goTo();
 
   await shopPages.catalog.openItem(3);
   await shopPages.item.addToCart();
   expectedAmountOfItemsInCart += 1;
-  await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeConfirmAddingModal();
 
   await shopPages.base.goToCart();
   await shopPages.cart.waitItemsAppearance(expectedAmountOfItemsInCart);
@@ -142,14 +145,14 @@ guest(
 
     await shopPages.catalog.openItem();
     await shopPages.item.addToCart();
-    await shopPages.item.closeAddingConfirmModal();
+    await shopPages.item.closeConfirmAddingModal();
 
     expect(await cartItemsCounter.innerText()).toContain(
       `${expectedCartCounterValue}`
     );
 
     await shopPages.item.addToCart();
-    await shopPages.item.closeAddingConfirmModal();
+    await shopPages.item.closeConfirmAddingModal();
     expectedCartCounterValue += 1;
 
     await expect(cartItemsCounter).toBeVisible();
@@ -182,7 +185,7 @@ for (let inputData of testData) {
 
 loginUser("STORE-010: Order item", async ({ shopPages }) => {
   const proceedToCheckoutBtn = shopPages.cart.proceedToCheckoutBtn;
-  const itemTitle = shopPages.item.itemTitleLocator;
+  const itemTitle = shopPages.base.itemDescComp.main.title;
   const finalSuccessMsg = shopPages.order.successOrderMsgLocator;
   const itemInSummary = shopPages.order.itemInPayConfirmationLocator;
 
@@ -190,7 +193,7 @@ loginUser("STORE-010: Order item", async ({ shopPages }) => {
 
   await shopPages.catalog.openItem(4);
   await shopPages.item.addToCart();
-  await shopPages.item.closeAddingConfirmModal();
+  await shopPages.item.closeConfirmAddingModal();
 
   const titleOfOrderedItem = await itemTitle.innerText();
 

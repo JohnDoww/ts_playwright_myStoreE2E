@@ -6,6 +6,10 @@ import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
 import { RegistrationFormComponent } from "../components/RegistrationFormComponent";
 import { LoginFormComponent } from "../components/LoginFormComponent";
 import { AddToCartComponent } from "../components/AddToCartComponent";
+import { BreadCrumbsComponent } from "../components/BreadCrumbsComponent";
+import { ItemDescriptionComponent } from "../components/ItemDescriptionComponent";
+import { AddedItemModalComponent } from "../components/AddedItemModalComponent";
+import { ItemAmountManagerComponent } from "../components/ItemAmountManagerComponent";
 export class BasePage {
   protected page: Page;
   searchComp: SearchComponent;
@@ -15,7 +19,10 @@ export class BasePage {
   logFormComp: LoginFormComponent;
   regFormComp: RegistrationFormComponent;
   addToCartComp: AddToCartComponent;
-  // breadcrumbComp: BreadCrumbComponent;
+  breadcrumbComp: BreadCrumbsComponent;
+  itemDescComp: ItemDescriptionComponent;
+  modalAfterItemAddComp: AddedItemModalComponent;
+  itemAmountManagerComp: ItemAmountManagerComponent;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,7 +33,10 @@ export class BasePage {
     this.logFormComp = new LoginFormComponent(page);
     this.regFormComp = new RegistrationFormComponent(page);
     this.addToCartComp = new AddToCartComponent(page);
-    // this.breadcrumbComp = new BreadCrumbComponent(page)
+    this.breadcrumbComp = new BreadCrumbsComponent(page);
+    this.itemDescComp = new ItemDescriptionComponent(page);
+    this.modalAfterItemAddComp = new AddedItemModalComponent(page);
+    this.itemAmountManagerComp = new ItemAmountManagerComponent(page);
   }
 
   async goTo(url: string = "/") {

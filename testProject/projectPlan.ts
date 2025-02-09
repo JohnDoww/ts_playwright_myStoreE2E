@@ -73,10 +73,11 @@ final work:
 const a ='s';
 // -- item page 
 // 5 addToCartComponent ++++
-// 6 bradCrumbComponent
-// 7 itemDescriptionComponent
-// 8 addingItemConfirmationModalComponent
-// 9 itemAmountManagerComponent
+// 6 bradCrumbComponent+++
+// 7 OpenItemComponent+++++
+// 8 addingItemConfirmationModalComponent+++++++++
+
+// 9 itemAmountManagerComponent+++++
 // -- Catalog page
 // 10 filterSectionComponent 
 // 11 catalogItemComponent
@@ -85,6 +86,6 @@ const a ='s';
 // -- UserPage 
 // 13 -----
 // -- OrderPage
-// 14 deliveryFormComponent
-// 15 shippingMethodComponent
-// 16 finalConfirmationComponent 
+// 13 deliveryFormComponent
+// 14 shippingMethodComponent
+// 15 finalConfirmationComponent 
