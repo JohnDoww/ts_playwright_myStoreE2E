@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { SearchComponent } from "../components/searchComponent";
+import { SearchComponent } from "../components/SearchComponent";
 import { CartDisplayComponent } from "../components/CartDisplayComponent";
 import { LoaderComponent } from "../components/LoaderComponent";
 import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
