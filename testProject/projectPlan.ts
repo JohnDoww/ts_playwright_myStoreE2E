@@ -61,9 +61,10 @@ final work:
 /////
 /// components 
 // -- base p
-// 1 searchComponnent ++++
-// 2 cartLinkComponent
-// 3 userIndicatorComponent
+// 1 searchComponnent +++++++
+// 2 cartLinkComponent ++++++
+// 3 loader++++++++++++
+// 3 userIndicatorComponent +++++++++++==
 // -- user reg page 
 // 4 registrationFormComponent
 // -- item page 

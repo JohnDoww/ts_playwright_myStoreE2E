@@ -55,7 +55,7 @@ guest(
     await shopPages.base.fillInSearch(searchRequest);
 
     const searchProposals = await shopPages.base.returnAllLocators(
-      shopPages.base.searchComp.proposedItemsLocator
+      shopPages.base.searchComp.proposedItems
     );
     for (let item of searchProposals) {
       await expect(item).toContainText(searchRequest, { ignoreCase: true });
@@ -136,7 +136,7 @@ guest("STORE-007. Delete all 2 items from the cart", async ({ shopPages }) => {
 guest(
   "STORE-008. Cart logo has indicator of items in cart",
   async ({ shopPages }) => {
-    const cartItemsCounter = shopPages.base.cartDisplayComp.counterLocator;
+    const cartItemsCounter = shopPages.base.cartDisplayComp.counter;
 
     let expectedCartCounterValue = 1;
 

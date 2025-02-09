@@ -1,26 +1,21 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { SearchComponent } from "../components/searchComponent";
-import { CartDisplayComponent } from "../components/CartLinkComponent";
-
+import { CartDisplayComponent } from "../components/CartDisplayComponent";
+import { LoaderComponent } from "../components/LoaderComponent";
+import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
 export class BasePage {
   protected page: Page;
   searchComp: SearchComponent;
   cartDisplayComp: CartDisplayComponent;
-  loaderLocator: Locator;
-  // cartBtn: Locator;
-  // inCartCounterLocator: Locator;
-
-  signInLink: Locator;
+  loaderComp: LoaderComponent;
+  userIndicatorComp: UserIndicatorComponent;
 
   constructor(page: Page) {
     this.page = page;
     this.searchComp = new SearchComponent(page);
     this.cartDisplayComp = new CartDisplayComponent(page);
-    this.loaderLocator = page.locator(".overlay__content");
-    // this.cartBtn = page.locator("#_desktop_cart");
-    // this.inCartCounterLocator = page.locator(".header .cart-products-count");
-
-    this.signInLink = page.locator(".user-info .hidden-sm-down");
+    this.loaderComp = new LoaderComponent(page);
+    this.userIndicatorComp = new UserIndicatorComponent(page);
   }
 
   async goTo(url: string = "/") {
@@ -36,9 +31,7 @@ export class BasePage {
   }
 
   async loaderHandler() {
-    if (await this.loaderLocator.isVisible()) {
-      await this.loaderLocator.waitFor({ state: "detached" });
-    }
+    await this.loaderComp.becomeHidden();
   }
 
   async returnAllLocators(locator) {
@@ -109,7 +102,6 @@ export class BasePage {
   }
 
   async clickSignInLink() {
-    await this.signInLink.waitFor();
-    await this.signInLink.click();
+    await this.userIndicatorComp.clickSignIn();
   }
 }

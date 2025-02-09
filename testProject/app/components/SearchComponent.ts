@@ -2,18 +2,18 @@ import { Locator, Page } from "@playwright/test";
 
 export class SearchComponent {
   protected page: Page;
-  private inputLocator: Locator;
-  proposedItemsLocator: Locator;
+  private input: Locator;
+  proposedItems: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.inputLocator = page.locator('[aria-label="Search"]');
-    this.proposedItemsLocator = page.locator(".ui-menu-item");
+    this.input = page.locator('[aria-label="Search"]');
+    this.proposedItems = page.locator(".ui-menu-item");
   }
 
   async fillIn(searchValue: string) {
-    await this.inputLocator.waitFor({ state: "visible" });
-    await this.inputLocator.fill(searchValue);
+    await this.input.waitFor({ state: "visible" });
+    await this.input.fill(searchValue);
   }
 
   async findItem(item) {
