@@ -1,6 +1,7 @@
 # Playwright Test Store
+Store which we will test
+- [automationtesting.co.uk](https://teststore.automationtesting.co.uk/index.php)
 
-- `https://teststore.automationtesting.co.uk/index.php` - Store which we will test
 
 ## Basic Setup
 
