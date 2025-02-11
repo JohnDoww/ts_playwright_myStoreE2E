@@ -1,4 +1,4 @@
-name: Playwright E2E tests running
+name: Run all Playwright E2E tests
 on:
   workflow_dispatch:
   push:

@@ -1,11 +1,11 @@
-name: Grab E2E to run
+name: Choose E2E to run
 on:
   workflow_dispatch:
     inputs:
       test:
         description: 'Choose test to run'
         required: true
-        default: "warning"
+        default: "enter test titles"
         type: string
 
  
@@ -31,7 +31,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run chosen Playwright test
-      run: npx playwright test --g "$TESTNAME"
+      run: npx playwright test -g "$TESTNAME"
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
