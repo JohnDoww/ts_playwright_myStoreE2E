@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
+import { step } from "../../utils/helpers/stepDecorator";
 import { ComponentsHolder } from "../components/ComponentsHolder";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 

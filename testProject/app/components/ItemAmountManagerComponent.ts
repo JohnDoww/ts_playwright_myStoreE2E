@@ -1,5 +1,5 @@
 import { Page, Locator } from "@playwright/test";
-import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
+import { step } from "../../utils/helpers/stepDecorator";
 
 export class ItemAmountManagerComponent {
   protected page: Page;
