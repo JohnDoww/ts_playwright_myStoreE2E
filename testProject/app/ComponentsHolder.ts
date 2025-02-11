@@ -1,23 +1,21 @@
 import { Page } from "@playwright/test";
-
-import { SearchComponent } from "../components/SearchComponent";
-import { CartDisplayComponent } from "../components/CartDisplayComponent";
-import { LoaderComponent } from "../components/LoaderComponent";
-import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
-import { RegistrationFormComponent } from "../components/RegistrationFormComponent";
-import { LoginFormComponent } from "../components/LoginFormComponent";
-import { AddToCartComponent } from "../components/AddToCartComponent";
-import { BreadCrumbsComponent } from "../components/BreadCrumbsComponent";
-import { ItemDescriptionComponent } from "../components/ItemDescriptionComponent";
-import { AddedItemModalComponent } from "../components/AddedItemModalComponent";
-import { ItemAmountManagerComponent } from "../components/ItemAmountManagerComponent";
-import { FilterSectionsComponent } from "../components/FilterSectionsComponent";
-import { CartSummaryComponent } from "../components/CartSummaryComponent";
-import { OrderDeliveryFormComponent } from "../components/OrderDeliveryFormComponent";
-import { ShippingMethodComponent } from "../components/ShippingMethodComponent";
-import { PaymentFormComponent } from "../components/PaymentFormComponent";
-import { OrderConfirmedComponent } from "../components/OrderConfirmedComponent";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
+import { SearchComponent } from "./components/SearchComponent";
+import { CartDisplayComponent } from "./components/CartDisplayComponent";
+import { LoaderComponent } from "./components/LoaderComponent";
+import { UserIndicatorComponent } from "./components/UserIndicatorComponent";
+import { RegistrationFormComponent } from "./components/RegistrationFormComponent";
+import { LoginFormComponent } from "./components/LoginFormComponent";
+import { AddToCartComponent } from "./components/AddToCartComponent";
+import { BreadCrumbsComponent } from "./components/BreadCrumbsComponent";
+import { ItemDescriptionComponent } from "./components/ItemDescriptionComponent";
+import { AddedItemModalComponent } from "./components/AddedItemModalComponent";
+import { ItemAmountManagerComponent } from "./components/ItemAmountManagerComponent";
+import { FilterSectionsComponent } from "./components/FilterSectionsComponent";
+import { CartSummaryComponent } from "./components/CartSummaryComponent";
+import { OrderDeliveryFormComponent } from "./components/OrderDeliveryFormComponent";
+import { ShippingMethodComponent } from "./components/ShippingMethodComponent";
+import { PaymentFormComponent } from "./components/PaymentFormComponent";
+import { OrderConfirmedComponent } from "./components/OrderConfirmedComponent";
 
 export class ComponentsHolder {
   private page: Page;
@@ -25,7 +23,6 @@ export class ComponentsHolder {
   cartDisplay: CartDisplayComponent;
   loader: LoaderComponent;
   userIndicator: UserIndicatorComponent;
-
   logForm: LoginFormComponent;
   regForm: RegistrationFormComponent;
   addToCart: AddToCartComponent;
@@ -42,12 +39,10 @@ export class ComponentsHolder {
 
   constructor(page: Page) {
     this.page = page;
-
     this.search = new SearchComponent(page);
     this.loader = new LoaderComponent(page);
     this.cartDisplay = new CartDisplayComponent(page);
     this.userIndicator = new UserIndicatorComponent(page);
-
     this.loader = new LoaderComponent(page);
     this.userIndicator = new UserIndicatorComponent(page);
     this.logForm = new LoginFormComponent(page);

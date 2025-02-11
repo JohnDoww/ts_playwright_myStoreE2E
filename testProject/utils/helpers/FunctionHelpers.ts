@@ -7,14 +7,14 @@ export class FunctionHelpers {
     this.page = page;
   }
 
-  @step("Get needed response")
+  @step("Get response")
   responseWaiter(toInclude: string) {
     return this.page.waitForResponse((response) =>
       response.url().includes(toInclude)
     );
   }
 
-  @step("Collect needed elements")
+  @step("Collect elements")
   async returnAllLocators(locator) {
     await locator.first().waitFor();
     const allSectionLocators = await locator.all();

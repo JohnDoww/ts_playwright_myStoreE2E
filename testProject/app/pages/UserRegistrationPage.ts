@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { step } from "../../utils/helpers/stepDecorator";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../components/ComponentsHolder";
+import { ComponentsHolder } from "../ComponentsHolder";
 
 export class UserRegistrationPage {
   private page: Page;

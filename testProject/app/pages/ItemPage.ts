@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { ComponentsHolder } from "../components/ComponentsHolder";
+import { ComponentsHolder } from "../ComponentsHolder";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 
 export class ItemPage {

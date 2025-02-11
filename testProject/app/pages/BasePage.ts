@@ -1,7 +1,7 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../components/ComponentsHolder";
+import { ComponentsHolder } from "../ComponentsHolder";
 export class BasePage {
   protected page: Page;
   private compHold: ComponentsHolder;

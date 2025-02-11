@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { ItemPage } from "./ItemPage";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../components/ComponentsHolder";
+import { ComponentsHolder } from "../ComponentsHolder";
 
 export class CartPage {
   private page: Page;
