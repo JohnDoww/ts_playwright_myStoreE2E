@@ -1,17 +1,16 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
+import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
 import { LoginFormComponent } from "../components/LoginFormComponent";
 export class LoginPage {
   protected page: Page;
   protected loginFormComp: LoginFormComponent;
-  userProfileLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.loginFormComp = new LoginFormComponent(page);
-
-    this.userProfileLink = page.locator("#_desktop_user_info");
   }
 
+  @step("Open registration form")
   async followToRegForm() {
     await this.loginFormComp.clickOnNoAccount();
   }

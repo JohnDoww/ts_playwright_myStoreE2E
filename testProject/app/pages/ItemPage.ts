@@ -1,34 +1,56 @@
 import { Page } from "@playwright/test";
-import { BasePage } from "./BasePage";
+import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
+import { ComponentsHolder } from "../components/ComponentsHolder";
+import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 
-export class ItemPage extends BasePage {
+export class ItemPage {
+  protected page: Page;
+  private compHold: ComponentsHolder;
+  private helper: FunctionHelpers;
   private partOfRequestModalAppearing: string = "controller";
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
+    this.compHold = new ComponentsHolder(page);
+    this.helper = new FunctionHelpers(page);
   }
 
+  @step("Add item to cart")
   async addToCart() {
     await this.page.waitForLoadState("load");
-
-    const waitForModalAppearing = super.responseWaiter(
+    const waitForModalAppearing = this.helper.responseWaiter(
       this.partOfRequestModalAppearing
     );
 
-    await this.addToCartComp.clickOn();
+    await this.compHold.addToCart.clickOn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }
+
+  @step("Handle confirm modal after item adding")
   async closeConfirmAddingModal() {
-    await this.modalAfterItemAddComp.clickOnClose();
-    await this.modalAfterItemAddComp.title.waitFor({ state: "hidden" });
+    await this.compHold.modalAfterItemAdd.clickOnClose();
+    await this.compHold.modalAfterItemAdd.title.waitFor({ state: "hidden" });
   }
 
+  @step("Change amount of needed item")
   async changeAmountOfNeededItem(action: "+" | "-") {
     if (action === "+") {
-      return await this.itemAmountManagerComp.increase();
+      return await this.compHold.itemAmountManager.increase();
     } else {
-      return await this.itemAmountManagerComp.decrease();
+      return await this.compHold.itemAmountManager.decrease();
     }
+  }
+
+  @step("Get breadcrumb")
+  async getBreadcrumb() {
+    await this.compHold.breadcrumb.body.waitFor();
+    return this.compHold.breadcrumb.body;
+  }
+
+  @step("Get item title")
+  async getTitle() {
+    await this.compHold.itemDesc.onMain.title.waitFor();
+    return this.compHold.itemDesc.onMain.title;
   }
 }

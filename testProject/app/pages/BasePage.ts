@@ -1,155 +1,52 @@
-import { expect, Locator, Page } from "@playwright/test";
-import { SearchComponent } from "../components/SearchComponent";
-import { CartDisplayComponent } from "../components/CartDisplayComponent";
-import { LoaderComponent } from "../components/LoaderComponent";
-import { UserIndicatorComponent } from "../components/UserIndicatorComponent";
-import { RegistrationFormComponent } from "../components/RegistrationFormComponent";
-import { LoginFormComponent } from "../components/LoginFormComponent";
-import { AddToCartComponent } from "../components/AddToCartComponent";
-import { BreadCrumbsComponent } from "../components/BreadCrumbsComponent";
-import { ItemDescriptionComponent } from "../components/ItemDescriptionComponent";
-import { AddedItemModalComponent } from "../components/AddedItemModalComponent";
-import { ItemAmountManagerComponent } from "../components/ItemAmountManagerComponent";
-import { FilterSectionsComponent } from "../components/FilterSectionsComponent";
-import { CartSummaryComponent } from "../components/CartSummaryComponent";
-import { OrderDeliveryFormComponent } from "../components/OrderDeliveryFormComponent";
-import { ShippingMethodComponent } from "../components/ShippingMethodComponent";
-import { PaymentFormComponent } from "../components/PaymentFormComponent";
-import { OrderConfirmedComponent } from "../components/OrderConfirmedComponent";
+import { Page } from "@playwright/test";
+import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
+import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
+import { ComponentsHolder } from "../components/ComponentsHolder";
 export class BasePage {
   protected page: Page;
-  searchComp: SearchComponent;
-  cartDisplayComp: CartDisplayComponent;
-  loaderComp: LoaderComponent;
-  userIndicatorComp: UserIndicatorComponent;
-  logFormComp: LoginFormComponent;
-  regFormComp: RegistrationFormComponent;
-  addToCartComp: AddToCartComponent;
-  breadcrumbComp: BreadCrumbsComponent;
-  itemDescComp: ItemDescriptionComponent;
-  modalAfterItemAddComp: AddedItemModalComponent;
-  itemAmountManagerComp: ItemAmountManagerComponent;
-  filterSectionsComp: FilterSectionsComponent;
-  cartSummaryComp: CartSummaryComponent;
-  orderDeliveryFromComp: OrderDeliveryFormComponent;
-  shippingMethodComp: ShippingMethodComponent;
-  paymentFormComp: PaymentFormComponent;
-  orderConfirmedComp: OrderConfirmedComponent;
+  private compHold: ComponentsHolder;
+  private helper: FunctionHelpers;
 
   constructor(page: Page) {
     this.page = page;
-    this.searchComp = new SearchComponent(page);
-    this.cartDisplayComp = new CartDisplayComponent(page);
-    this.loaderComp = new LoaderComponent(page);
-    this.userIndicatorComp = new UserIndicatorComponent(page);
-    this.logFormComp = new LoginFormComponent(page);
-    this.regFormComp = new RegistrationFormComponent(page);
-    this.addToCartComp = new AddToCartComponent(page);
-    this.breadcrumbComp = new BreadCrumbsComponent(page);
-    this.itemDescComp = new ItemDescriptionComponent(page);
-    this.modalAfterItemAddComp = new AddedItemModalComponent(page);
-    this.itemAmountManagerComp = new ItemAmountManagerComponent(page);
-    this.filterSectionsComp = new FilterSectionsComponent(page);
-    this.cartSummaryComp = new CartSummaryComponent(page);
-    this.orderDeliveryFromComp = new OrderDeliveryFormComponent(page);
-    this.shippingMethodComp = new ShippingMethodComponent(page);
-    this.paymentFormComp = new PaymentFormComponent(page);
-    this.orderConfirmedComp = new OrderConfirmedComponent(page);
+    this.helper = new FunctionHelpers(page);
+    this.compHold = new ComponentsHolder(page);
   }
-
+  @step("open Home Page")
   async goTo(url: string = "/") {
     await this.page.goto(url);
   }
-
+  @step("Fill search")
   async fillInSearch(searchValue: string) {
-    await this.searchComp.fillIn(searchValue);
+    await this.compHold.search.fillIn(searchValue);
   }
-
+  @step("Search item")
   async searchForItem(searchValue: string) {
-    await this.searchComp.findItem(searchValue);
+    await this.compHold.search.findItem(searchValue);
   }
-
+  @step("Handle the loader")
   async loaderHandler() {
-    await this.loaderComp.becomeHidden();
+    await this.compHold.loader.becomeHidden();
   }
 
-  async returnAllLocators(locator) {
-    await locator.first().waitFor();
-
-    const allSectionLocators = await locator.all();
-
-    return allSectionLocators;
-  }
-
+  @step("Open cart page")
   async goToCart() {
-    await this.cartDisplayComp.clickOnBtn();
+    await this.compHold.cartDisplay.clickOnBtn();
   }
 
-  async fillForm(orderData: Record<string, string>) {
-    if (orderData) {
-      for (const [key, value] of Object.entries(orderData)) {
-        // handle checkboxes
-        if (value === "true") {
-          await this.page.getByLabel(key).click();
-          continue;
-        }
-        // handle item names
-        if (key === "testTitle" || value === "false") {
-          continue;
-        }
-        // handle state dropdown
-        if (key === "State") {
-          await this.page.getByLabel(key).selectOption(value);
-          continue;
-        }
-        // handle Address field
-        if (key === "Address") {
-          await this.page.locator("#field-address1").click();
-          await this.page.locator("#field-address1").fill(value);
-          continue;
-        }
-
-        await this.page.getByLabel(key).click();
-        await this.page.getByLabel(key).fill(value);
-      }
-    }
+  getCartCounter() {
+    return this.compHold.cartDisplay.counter;
   }
 
-  responseWaiter(toInclude) {
-    return this.page.waitForResponse((response) =>
-      response.url().includes(toInclude)
-    );
-  }
-
-  async waitElementsAppearance(elements: Locator, neededAmount = 1) {
-    await elements.first().waitFor();
-    await expect
-      .poll(
-        async () => {
-          let visibleItem = 0;
-          for (const el of await elements.all()) {
-            if (await el.isVisible()) visibleItem++;
-          }
-          return visibleItem;
-        },
-        {
-          intervals: [500, 1_000],
-          timeout: 30_000,
-        }
-      )
-      .toBe(neededAmount);
-  }
-
+  @step("Open login page")
   async clickSignInLink() {
-    await this.userIndicatorComp.clickSignIn();
+    await this.compHold.userIndicator.clickSignIn();
   }
 
-  async extractNumberFromStr(str) {
-    const extractFrom = str.match(/(\d+)/);
-    let numberAmount = 0;
-    if (Array.isArray(extractFrom)) {
-      numberAmount = parseInt(extractFrom[0]);
-    }
-    return numberAmount;
+  @step("Get proposed items in search")
+  async returnProposedItemsInSearch() {
+    return await this.helper.returnAllLocators(
+      this.compHold.search.proposedItems
+    );
   }
 }

@@ -1,56 +1,81 @@
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
+import { step } from "/Users/aprot/VSCodeProjects/ts-playwright-testProject/testProject/utils/helpers/stepDecorator";
 import { ItemPage } from "./ItemPage";
-import { BasePage } from "./BasePage";
+import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
+import { ComponentsHolder } from "../components/ComponentsHolder";
 
-export class CartPage extends BasePage {
+export class CartPage {
+  private page: Page;
   private itemPage: ItemPage;
+  private helper: FunctionHelpers;
+  private compHold: ComponentsHolder;
+
   private requestWhenCartIsUpdated: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
   private requestUpdatedAmount: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
+    this.helper = new FunctionHelpers(page);
+    this.compHold = new ComponentsHolder(page);
     this.itemPage = new ItemPage(page);
   }
 
-  async getAmountOfAddedItem(locatorOrder: number = 0) {
-    await this.cartSummaryComp.addedItem.nth(locatorOrder).waitFor();
-    return await this.cartSummaryComp.amountPerAddedItem
-      .nth(locatorOrder)
-      .getAttribute("value");
+  @step("Get added item")
+  async addedItem() {
+    return this.compHold.cartSummary.addedItem;
   }
 
+  @step("Get all added item")
+  async allAddedItem() {
+    await this.waitItemsAppearance();
+    return await this.helper.returnAllLocators(
+      this.compHold.cartSummary.addedItem
+    );
+  }
+
+  @step("Get amount of added item")
+  async getAmountOfAddedItem(locatorOrder: number = 0) {
+    await this.compHold.cartSummary.addedItem.nth(locatorOrder).waitFor();
+    const amount = await this.compHold.cartSummary.amountPerAddedItem
+      .nth(locatorOrder)
+      .inputValue();
+    return amount;
+  }
+
+  @step("Change item amount")
   async changeAmountOfAddedItem(action: "+" | "-") {
-    const waitTillNeededResponse = super.responseWaiter(
+    const waitTillNeededResponse = this.helper.responseWaiter(
       this.requestUpdatedAmount
     );
     await this.itemPage.changeAmountOfNeededItem(action);
     await waitTillNeededResponse;
   }
 
+  @step("Wait for items")
   async waitItemsAppearance(expectedAmount = 1) {
-    await super.waitElementsAppearance(
-      this.cartSummaryComp.addedItem,
+    await this.helper.waitElementsAppearance(
+      this.compHold.cartSummary.addedItem,
       expectedAmount
     );
   }
 
+  @step("Delete item from cart")
   async removeItem(itemOrder = 0) {
     await this.page.waitForLoadState("load");
 
-    const waitUpdatingStateOfCart = super.responseWaiter(
+    const waitUpdatingStateOfCart = this.helper.responseWaiter(
       this.requestWhenCartIsUpdated
     );
-
-    await this.cartSummaryComp.removeItem(itemOrder);
-
+    await this.compHold.cartSummary.removeItem(itemOrder);
     await waitUpdatingStateOfCart;
     await this.page.reload();
     await this.page.waitForLoadState("load");
   }
 
+  @step("Proceed to checkout")
   async clickProceedToCheckoutBtn() {
-    await this.cartSummaryComp.clickOnProceedToCheckoutBtn();
+    await this.compHold.cartSummary.clickOnProceedToCheckoutBtn();
   }
 }
