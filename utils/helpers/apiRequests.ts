@@ -17,8 +17,8 @@ export async function getNewRegUserStorageState(
       email: userEmail,
       password: "Qwerty123!",
       psgdpr: 1,
-      submitCreate: 1
-    }
+      submitCreate: 1,
+    },
   });
   return await requestContext.storageState();
 }
