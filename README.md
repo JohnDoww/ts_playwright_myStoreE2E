@@ -24,7 +24,7 @@ Page objects simplify authoring by creating a higher-level API which suits app a
 
 #### Compositions for working with complex Page objects
 
-#### [Parallel tests --workers=4](https://playwright.dev/docs/test-parallel)
+#### [Parallel tests --workers=3](https://playwright.dev/docs/test-parallel)
 
 #### [globalSetup](https://playwright.dev/docs/test-global-setup-teardown#option-2-configure-globalsetup-and-globalteardown)
 
@@ -35,6 +35,8 @@ Global setup in my project authenticates once and reuses authentication state in
 Each call to the decorated method will show up as a step in the report.
 
 #### [Configured playwright config](https://playwright.dev/docs/test-configuration)
+
+#### [Configured ESLint config](https://eslint.org/docs/latest/use/configure/)
 
 ---
 
@@ -50,7 +52,7 @@ Each call to the decorated method will show up as a step in the report.
 ### How to run tests?
 
 - `npx playwright test` - Running all tests
-- `npx playwright test some.test.ts` - Running a single test file
+- `npx playwright test cart.test.ts` - Running a single test file
 - `npx playwright test search/item/catt` - Run a set of test files
 - `npx playwright test item search` - Run files that have item or search in the file name
 - `npx playwright test -g "STORE-001"` - Run the tests which contain STORE-001 in title
