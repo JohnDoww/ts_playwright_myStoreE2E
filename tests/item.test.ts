@@ -14,7 +14,7 @@ test.describe("Item", () => {
         { ignoreCase: true }
       );
       await expect(await shopPages.item.getTitle()).toContainText(itemTitle, {
-        ignoreCase: true,
+        ignoreCase: true
       });
     }
   );

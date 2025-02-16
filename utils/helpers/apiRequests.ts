@@ -3,7 +3,7 @@ import dataGenerator from "../testData/dataGenerator";
 
 const endpoints = {
   userRegistrationUrl:
-    "https://teststore.automationtesting.co.uk/index.php?controller=registration",
+    "https://teststore.automationtesting.co.uk/index.php?controller=registration"
 };
 
 export async function getNewRegUserStorageState(
@@ -17,8 +17,8 @@ export async function getNewRegUserStorageState(
       email: userEmail,
       password: "Qwerty123!",
       psgdpr: 1,
-      submitCreate: 1,
-    },
+      submitCreate: 1
+    }
   });
   return await requestContext.storageState();
 }

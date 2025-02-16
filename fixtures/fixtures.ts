@@ -14,7 +14,7 @@ export const guest = test.extend<ShopPages>({
     await page.waitForLoadState();
 
     await use(shopPages);
-  },
+  }
 });
 
 export const loginUser = test.extend<ShopPages>({
@@ -22,7 +22,7 @@ export const loginUser = test.extend<ShopPages>({
     const savedStorageState = await getNewRegUserStorageState();
 
     const context = await browser.newContext({
-      storageState: savedStorageState,
+      storageState: savedStorageState
     });
     const page = await context.newPage();
     const shopPages = new PageHolder(page);
@@ -31,5 +31,5 @@ export const loginUser = test.extend<ShopPages>({
     await page.waitForLoadState();
 
     await use(shopPages);
-  },
+  }
 });

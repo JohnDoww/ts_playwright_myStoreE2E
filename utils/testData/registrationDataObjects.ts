@@ -10,7 +10,7 @@ export const regData = [
     "Last name": "Gogo",
     Email: `${dataGenerator.getNewEmail()}`,
     Password: "dindindon123!",
-    Birthdate: "false",
+    Birthdate: "false"
   },
 
   {
@@ -23,6 +23,6 @@ export const regData = [
     "Last name": "Naaaaa",
     Email: `${dataGenerator.getNewEmail()}`,
     Password: "dindindon123!",
-    Birthdate: "05/31/1970",
-  },
+    Birthdate: "05/31/1970"
+  }
 ];

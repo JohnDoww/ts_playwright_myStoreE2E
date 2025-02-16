@@ -35,7 +35,7 @@ export class FunctionHelpers {
         },
         {
           intervals: [500, 1_000],
-          timeout: 30_000,
+          timeout: 30_000
         }
       )
       .toBeGreaterThanOrEqual(neededAmount);
@@ -71,7 +71,7 @@ export class FunctionHelpers {
     }
   }
 
-   async extractNumberFromStr(str) {
+  async extractNumberFromStr(str) {
     const extractFrom = str.match(/(\d+)/);
     let numberAmount = 0;
     if (Array.isArray(extractFrom)) {
@@ -80,7 +80,7 @@ export class FunctionHelpers {
     return numberAmount;
   }
 
-   async getElementText(element: Locator) {
+  async getElementText(element: Locator) {
     await element.waitFor();
     const extractedValue = await element.innerText();
     return extractedValue;

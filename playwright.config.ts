@@ -12,55 +12,55 @@ import { defineConfig, devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 40_000,
+    timeout: 40_000,
 
-  testDir: "./tests/",
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI and locally */
-  retries: process.env.CI ? 1:1,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 2 : 2,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["html"],['github']], 
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
+    testDir: "./tests/",
+    /* Run tests in files in parallel */
+    fullyParallel: true,
+    /* Fail the build on CI if you accidentally left test.only in the source code. */
+    forbidOnly: !!process.env.CI,
+    /* Retry on CI and locally */
+    retries: 1,
+    /* Opt out of parallel tests on CI. */
+    workers: process.env.CI ? 2 : 3,
+    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+    reporter: [["html"], ["github"]],
+    /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+    use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "https://teststore.automationtesting.co.uk/index.php",
+        baseURL: "https://teststore.automationtesting.co.uk/index.php",
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
-    video: "retain-on-failure",
-  },
-
-  /* Configure projects for major browsers */
-  projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+        /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+        trace: "on-first-retry",
+        video: "retain-on-failure"
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    /* Configure projects for major browsers */
+    projects: [
+        {
+            name: "chromium",
+            use: { ...devices["Desktop Chrome"] }
+        },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+        {
+            name: "firefox",
+            use: { ...devices["Desktop Firefox"] }
+        },
 
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+        {
+            name: "webkit",
+            use: { ...devices["Desktop Safari"] }
+        }
+
+        /* Test against mobile viewports. */
+        // {
+        //   name: 'Mobile Chrome',
+        //   use: { ...devices['Pixel 5'] },
+        // },
+        // {
+        //   name: 'Mobile Safari',
+        //   use: { ...devices['iPhone 12'] },
+        // },
 
     /* Test against branded browsers. */
     // {
@@ -71,12 +71,12 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
+    ]
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+    /* Run your local dev server before starting the tests */
+    // webServer: {
+    //   command: 'npm run start',
+    //   url: 'http://127.0.0.1:3000',
+    //   reuseExistingServer: !process.env.CI,
+    // },
 });

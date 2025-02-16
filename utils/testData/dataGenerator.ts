@@ -10,7 +10,7 @@ export default {
       Address: "Good str. 12",
       City: "Chichi",
       Zip: "01123",
-      State: "Hawaii",
+      State: "Hawaii"
     };
-  },
+  }
 };

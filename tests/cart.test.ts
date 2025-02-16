@@ -64,7 +64,7 @@ test.describe("Cart", () => {
     expect(await itemsInCart.length).toBe(expectedAmountOfItemsInCart - 1);
 
     await shopPages.cart.removeItem();
-    await expect(await shopPages.cart.addedItem()).not.toBeVisible();
+    await expect(await shopPages.cart.addedItem()).toBeHidden();
   });
 
   guest(

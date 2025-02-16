@@ -16,13 +16,13 @@ export class ItemDescription {
     this.page = page;
 
     this.onMain = {
-      title: page.locator("h1"),
+      title: page.locator("h1")
     };
     this.onPreview = {
-      title: page.locator(".product-description a"),
+      title: page.locator(".product-description a")
     };
     this.onCreatedOrder = {
-      title: page.locator(".order-line.row"),
+      title: page.locator(".order-line.row")
     };
   }
 }
