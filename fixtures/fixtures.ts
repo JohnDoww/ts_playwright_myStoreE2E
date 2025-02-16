@@ -1,6 +1,5 @@
 import { test } from "@playwright/test";
-// import { PageHolder } from "../../app/PageHolder";
-import { PageHolder } from "../app/PageHolder";
+import { PageHolder } from "../app/pages/PageHolder";
 
 import { getNewRegUserStorageState } from "../utils/helpers/apiRequests";
 

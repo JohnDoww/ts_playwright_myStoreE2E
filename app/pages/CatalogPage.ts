@@ -2,12 +2,14 @@ import { Page, expect } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { HomePage } from "./HomePage";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../ComponentsHolder";
+import { ItemDescription } from "../components/ItemDescription.component";
+import { FilterSections } from "../components/FilterSections.component";
 
 export class CatalogPage {
   private page: Page;
   private helper: FunctionHelpers;
-  private compHold: ComponentsHolder;
+  private itemDesc: ItemDescription;
+  private filterSections: FilterSections;
   private homePage: HomePage;
   private url: string = "?id_category=2&controller=category";
   private requestAfterApplyingFilters: string =
@@ -16,7 +18,8 @@ export class CatalogPage {
   constructor(page: Page) {
     this.page = page;
     this.helper = new FunctionHelpers(page);
-    this.compHold = new ComponentsHolder(page);
+    this.itemDesc = new ItemDescription(page);
+    this.filterSections = new FilterSections(page);
     this.homePage = new HomePage(page);
   }
 
@@ -28,22 +31,22 @@ export class CatalogPage {
   @step("Open item")
   async openItem(itemOrder: number = 0) {
     await this.page.waitForLoadState("load");
-    await this.compHold.itemDesc.onPreview.title.nth(itemOrder).waitFor();
-    await this.compHold.itemDesc.onPreview.title.nth(itemOrder).click();
+    await this.itemDesc.onPreview.title.nth(itemOrder).waitFor();
+    await this.itemDesc.onPreview.title.nth(itemOrder).click();
     await this.page.waitForLoadState("load");
   }
 
   async getItemTitle(itemOrder: number = 0) {
     const itemDescText = await this.helper.getElementText(
-      this.compHold.itemDesc.onPreview.title.nth(itemOrder)
+      this.itemDesc.onPreview.title.nth(itemOrder)
     );
     return itemDescText;
   }
 
   @step("Get all items description")
   async returnAllItemsDescriptionOnPage() {
-    await this.compHold.itemDesc.onPreview.title.last().waitFor();
-    return await this.compHold.itemDesc.onPreview.title.all();
+    await this.itemDesc.onPreview.title.last().waitFor();
+    return await this.itemDesc.onPreview.title.all();
   }
 
   @step("Click filter")
@@ -56,7 +59,7 @@ export class CatalogPage {
   async returnItemAmountForFilter(filterLocator) {
     await filterLocator.first().waitFor();
     const productsAmountOnFilter = await this.helper.getElementText(
-      this.compHold.filterSections.itemsPerFilter(filterLocator)
+      this.filterSections.itemsPerFilter(filterLocator)
     );
     return await this.helper.extractNumberFromStr(productsAmountOnFilter);
   }
@@ -64,7 +67,7 @@ export class CatalogPage {
   @step("Compare amount of items per filter and items in catalog")
   async compareAmountItemsOnPageAndOnFilter(filterOptions) {
     for (const testFilter of await filterOptions) {
-      const filterCheckbox = this.compHold.filterSections.checkbox(testFilter);
+      const filterCheckbox = this.filterSections.checkbox(testFilter);
 
       await this.page.waitForLoadState("load");
       await testFilter.waitFor();
@@ -96,7 +99,7 @@ export class CatalogPage {
   @step("Get composition filters")
   async getCompositionFilters() {
     return await this.helper.returnAllLocators(
-      this.compHold.filterSections.compositionSection
+      this.filterSections.compositionSection
     );
   }
 }

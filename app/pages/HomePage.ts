@@ -1,52 +1,59 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../ComponentsHolder";
+import { Search } from "../components/Search.component";
+import { Loader } from "../components/Loader.component";
+import { CartDisplay } from "../components/CartDisplay.component";
+import { UserIndicator } from "../components/UserIndicator.component";
 export class HomePage {
-  protected page: Page;
-  private compHold: ComponentsHolder;
+  private page: Page;
+  private search: Search;
+  private loader: Loader;
+  private cartDisplay: CartDisplay;
+  private userIndicator: UserIndicator;
   private helper: FunctionHelpers;
 
   constructor(page: Page) {
     this.page = page;
+    this.search = new Search(page);
+    this.loader = new Loader(page);
+    this.cartDisplay = new CartDisplay(page);
+    this.userIndicator = new UserIndicator(page);
     this.helper = new FunctionHelpers(page);
-    this.compHold = new ComponentsHolder(page);
   }
-  @step("open Home Page")
+  @step("Open home page")
   async goTo(url: string = "/") {
     await this.page.goto(url);
   }
   @step("Fill search")
   async fillInSearch(searchValue: string) {
-    await this.compHold.search.fillIn(searchValue);
+    await this.search.fillIn(searchValue);
   }
   @step("Search item")
   async searchForItem(searchValue: string) {
-    await this.compHold.search.findItem(searchValue);
+    await this.search.findItem(searchValue);
   }
   @step("Handle the loader")
   async loaderHandler() {
-    await this.compHold.loader.becomeHidden();
+    await this.loader.becomeHidden();
   }
 
   @step("Open cart page")
   async goToCart() {
-    await this.compHold.cartDisplay.clickOnBtn();
+    await this.cartDisplay.clickOnBtn();
   }
 
   getCartCounter() {
-    return this.compHold.cartDisplay.counter;
+    return this.cartDisplay.counter;
   }
 
   @step("Open login page")
   async clickSignInLink() {
-    await this.compHold.userIndicator.clickSignIn();
+    await this.userIndicator.clickSignIn();
   }
 
   @step("Get proposed items in search")
   async returnProposedItemsInSearch() {
-    return await this.helper.returnAllLocators(
-      this.compHold.search.proposedItems
-    );
+    return await this.helper.returnAllLocators(this.search.proposedItems);
   }
 }

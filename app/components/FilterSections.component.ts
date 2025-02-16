@@ -1,6 +1,6 @@
 import { Page, Locator } from "@playwright/test";
 
-export class FilterSectionsComponent {
+export class FilterSections {
   protected page: Page;
   compositionSection: Locator;
 

@@ -1,17 +1,29 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { ComponentsHolder } from "../ComponentsHolder";
+import { AddToCart } from "../components/AddToCart.component";
+import { AddedItemModal } from "../components/AddedItemModal.component";
+import { BreadCrumbs } from "../components/BreadCrumbs.component";
+import { ItemDescription } from "../components/ItemDescription.component";
+import { ItemAmountManager } from "../components/ItemAmountManager.component";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 
 export class ItemPage {
-  protected page: Page;
-  private compHold: ComponentsHolder;
+  private page: Page;
+  private addToCartComp: AddToCart;
+  private breadCrumbComp: BreadCrumbs;
+  private itemDescComp: ItemDescription;
+  private addedItemModalComp: AddedItemModal;
+  private itemAmountManagerComp: ItemAmountManager;
   private helper: FunctionHelpers;
   private partOfRequestModalAppearing: string = "controller";
 
   constructor(page: Page) {
     this.page = page;
-    this.compHold = new ComponentsHolder(page);
+    this.addedItemModalComp = new AddedItemModal(page);
+    this.itemDescComp = new ItemDescription(page);
+    this.breadCrumbComp = new BreadCrumbs(page);
+    this.itemAmountManagerComp = new ItemAmountManager(page);
+    this.addToCartComp = new AddToCart(page);
     this.helper = new FunctionHelpers(page);
   }
 
@@ -22,35 +34,35 @@ export class ItemPage {
       this.partOfRequestModalAppearing
     );
 
-    await this.compHold.addToCart.clickOn();
+    await this.addToCartComp.clickOn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }
 
   @step("Handle confirm modal after item adding")
   async closeConfirmAddingModal() {
-    await this.compHold.modalAfterItemAdd.clickOnClose();
-    await this.compHold.modalAfterItemAdd.title.waitFor({ state: "hidden" });
+    await this.addedItemModalComp.clickOnClose();
+    await this.addedItemModalComp.title.waitFor({ state: "hidden" });
   }
 
   @step("Change amount of needed item")
   async changeAmountOfNeededItem(action: "+" | "-") {
     if (action === "+") {
-      return await this.compHold.itemAmountManager.increase();
+      return await this.itemAmountManagerComp.increase();
     } else {
-      return await this.compHold.itemAmountManager.decrease();
+      return await this.itemAmountManagerComp.decrease();
     }
   }
 
   @step("Get breadcrumb")
   async getBreadcrumb() {
-    await this.compHold.breadcrumb.body.waitFor();
-    return this.compHold.breadcrumb.body;
+    await this.breadCrumbComp.body.waitFor();
+    return this.breadCrumbComp.body;
   }
 
   @step("Get item title")
   async getTitle() {
-    await this.compHold.itemDesc.onMain.title.waitFor();
-    return this.compHold.itemDesc.onMain.title;
+    await this.itemDescComp.onMain.title.waitFor();
+    return this.itemDescComp.onMain.title;
   }
 }

@@ -2,13 +2,13 @@ import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { ItemPage } from "./ItemPage";
 import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
-import { ComponentsHolder } from "../ComponentsHolder";
+import { CartSummary } from "../components/CartSummary.component";
 
 export class CartPage {
   private page: Page;
   private itemPage: ItemPage;
   private helper: FunctionHelpers;
-  private compHold: ComponentsHolder;
+  private cartSummaryComp: CartSummary;
 
   private requestWhenCartIsUpdated: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
@@ -18,27 +18,25 @@ export class CartPage {
   constructor(page: Page) {
     this.page = page;
     this.helper = new FunctionHelpers(page);
-    this.compHold = new ComponentsHolder(page);
+    this.cartSummaryComp = new CartSummary(page);
     this.itemPage = new ItemPage(page);
   }
 
   @step("Get added item")
   async addedItem() {
-    return this.compHold.cartSummary.addedItem;
+    return this.cartSummaryComp.addedItem;
   }
 
   @step("Get all added item")
   async allAddedItem() {
     await this.waitItemsAppearance();
-    return await this.helper.returnAllLocators(
-      this.compHold.cartSummary.addedItem
-    );
+    return await this.helper.returnAllLocators(this.cartSummaryComp.addedItem);
   }
 
   @step("Get amount of added item")
   async getAmountOfAddedItem(locatorOrder: number = 0) {
-    await this.compHold.cartSummary.addedItem.nth(locatorOrder).waitFor();
-    const amount = await this.compHold.cartSummary.amountPerAddedItem
+    await this.cartSummaryComp.addedItem.nth(locatorOrder).waitFor();
+    const amount = await this.cartSummaryComp.amountPerAddedItem
       .nth(locatorOrder)
       .inputValue();
     return amount;
@@ -56,7 +54,7 @@ export class CartPage {
   @step("Wait for items")
   async waitItemsAppearance(expectedAmount = 1) {
     await this.helper.waitElementsAppearance(
-      this.compHold.cartSummary.addedItem,
+      this.cartSummaryComp.addedItem,
       expectedAmount
     );
   }
@@ -68,7 +66,7 @@ export class CartPage {
     const waitUpdatingStateOfCart = this.helper.responseWaiter(
       this.requestWhenCartIsUpdated
     );
-    await this.compHold.cartSummary.removeItem(itemOrder);
+    await this.cartSummaryComp.removeItem(itemOrder);
     await waitUpdatingStateOfCart;
     await this.page.reload();
     await this.page.waitForLoadState("load");
@@ -76,6 +74,6 @@ export class CartPage {
 
   @step("Proceed to checkout")
   async clickProceedToCheckoutBtn() {
-    await this.compHold.cartSummary.clickOnProceedToCheckoutBtn();
+    await this.cartSummaryComp.clickOnProceedToCheckoutBtn();
   }
 }
