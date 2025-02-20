@@ -2,7 +2,9 @@
   "name": "ts-playwright-my-store",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky install"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
@@ -15,7 +17,8 @@
     "eslint": "^9.20.1",
     "eslint-plugin-playwright": "^2.2.0",
     "globals": "^15.15.0",
-    "typescript-eslint": "^8.24.0"
+    "typescript-eslint": "^8.24.0",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "@faker-js/faker": "^9.4.0"
