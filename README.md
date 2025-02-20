@@ -38,12 +38,15 @@ Each call to the decorated method will show up as a step in the report.
 
 #### [Configured ESLint config](https://eslint.org/docs/latest/use/configure/)
 
+#### [Husky pre-commit](https://typicode.github.io/husky/)
+
+#### [Faker - random data generation](https://www.npmjs.com/package/@faker-js/faker)
+
 ---
 
 ## Setup
 
 - User needs node.js and npm in their machine
-- tsconfig is set for node12 by default [https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping]
 
 ### Installation
 
@@ -62,6 +65,13 @@ Each call to the decorated method will show up as a step in the report.
 ### How to run Codegen?
 
 - `npx playwright codegen https://teststore.automationtesting.co.uk/index.php` - to run codegen
+
+### How to run ES Lint code checker?
+
+- `npx eslint .` - to run Es Lint
+- `npx eslint . --fix` - to fix all Es Lint errors if possible
+
+
 
 ## Useful links
 
