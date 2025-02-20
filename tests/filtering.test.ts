@@ -12,7 +12,5 @@ test.describe("Filtering", () => {
         filterOptions
       );
     }
-
-    
   );
 });
