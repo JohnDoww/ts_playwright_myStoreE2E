@@ -1,27 +1,29 @@
 import { Page } from "@playwright/test";
 import { HomePage } from "./HomePage";
 import { step } from "../../utils/helpers/stepDecorator";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 import { LoginForm } from "../components/LoginForm.component";
 import { RegistrationForm } from "../components/RegistrationForm.component";
 import { UserIndicator } from "../components/UserIndicator.component";
+import { BasePage } from "./BasePage.abstract";
 
-export class UserRegistrationPage {
-  private page: Page;
+export class UserRegistrationPage extends BasePage {
   private logFormComp: LoginForm;
   private regFormComp: RegistrationForm;
   private userIndicatorComp: UserIndicator;
-  private helper: FunctionHelpers;
   private homePage: HomePage;
   private partOfRequestAfterFormSubmit: string = "controller=action";
+  private url: string = "?controller=registration";
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.logFormComp = new LoginForm(page);
     this.regFormComp = new RegistrationForm(page);
     this.userIndicatorComp = new UserIndicator(page);
-    this.helper = new FunctionHelpers(page);
     this.homePage = new HomePage(page);
+  }
+  @step("Go to registration page")
+  async goTo() {
+    await this.page.goto(this.url);
   }
 
   @step("Open user registration page")

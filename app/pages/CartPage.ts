@@ -1,25 +1,27 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { ItemPage } from "./ItemPage";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 import { CartSummary } from "../components/CartSummary.component";
+import { BasePage } from "./BasePage.abstract";
 
-export class CartPage {
-  private page: Page;
+export class CartPage extends BasePage {
   private itemPage: ItemPage;
-  private helper: FunctionHelpers;
   private cartSummaryComp: CartSummary;
-
+  private url: string = "/controller=cart&action=show";
   private requestWhenCartIsUpdated: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
   private requestUpdatedAmount: string =
     "fc=module&module=ps_shoppingcart&controller=ajax";
 
   constructor(page: Page) {
-    this.page = page;
-    this.helper = new FunctionHelpers(page);
+    super(page);
     this.cartSummaryComp = new CartSummary(page);
     this.itemPage = new ItemPage(page);
+  }
+
+  @step("Open cart page")
+  async goTo() {
+    await this.page.goto(this.url);
   }
 
   @step("Get added item")

@@ -3,7 +3,7 @@ import { guest } from "../fixtures/fixtures";
 
 test.describe("Search", () => {
   guest(
-    "STORE-001: Found items contain search world",
+    "STORE-001: Found items contain search word",
     async ({ shopPages }) => {
       const searchRequest = "Mug";
       await shopPages.home.searchForItem(searchRequest);

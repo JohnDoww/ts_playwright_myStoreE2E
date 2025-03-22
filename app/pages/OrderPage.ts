@@ -1,29 +1,32 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 import { ItemDescription } from "../components/ItemDescription.component";
 import { OrderDeliveryForm } from "../components/OrderDeliveryForm.component";
 import { OrderConfirmed } from "../components/OrderConfirmed.component";
 import { PaymentForm } from "../components/PaymentForm.component";
 import { ShippingMethod } from "../components/ShippingMethod.component";
+import { BasePage } from "./BasePage.abstract";
 
-export class OrderPage {
-  private page: Page;
+export class OrderPage extends BasePage {
   private itemDescComp: ItemDescription;
   private orderDeliveryFormComp: OrderDeliveryForm;
   private orderConfirmedComp: OrderConfirmed;
   private paymentFormComp: PaymentForm;
   private shippingMethodComp: ShippingMethod;
-  private helper: FunctionHelpers;
+  private url: string = "?controller=order";
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.itemDescComp = new ItemDescription(page);
     this.orderDeliveryFormComp = new OrderDeliveryForm(page);
     this.orderConfirmedComp = new OrderConfirmed(page);
     this.paymentFormComp = new PaymentForm(page);
     this.shippingMethodComp = new ShippingMethod(page);
-    this.helper = new FunctionHelpers(page);
+  }
+
+  @step("Open order page")
+  async goTo() {
+    await this.page.goto(this.url);
   }
 
   @step("Pass order creation form")

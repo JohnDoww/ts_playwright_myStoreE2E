@@ -8,6 +8,7 @@ export class OrderDeliveryForm {
     this.page = page;
     this.submitBtn = page.locator("#delivery-address .continue.btn");
   }
+
   async submitInfo() {
     await this.submitBtn.waitFor();
     await this.submitBtn.click();

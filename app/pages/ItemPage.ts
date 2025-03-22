@@ -5,26 +5,30 @@ import { AddedItemModal } from "../components/AddedItemModal.component";
 import { BreadCrumbs } from "../components/BreadCrumbs.component";
 import { ItemDescription } from "../components/ItemDescription.component";
 import { ItemAmountManager } from "../components/ItemAmountManager.component";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
+import { BasePage } from "./BasePage.abstract";
 
-export class ItemPage {
-  private page: Page;
+export class ItemPage extends BasePage {
   private addToCartComp: AddToCart;
   private breadCrumbComp: BreadCrumbs;
   private itemDescComp: ItemDescription;
   private addedItemModalComp: AddedItemModal;
   private itemAmountManagerComp: ItemAmountManager;
-  private helper: FunctionHelpers;
   private partOfRequestModalAppearing: string = "controller";
+  private url: string =
+    "?id_product=4&id_product_attribute=16&rewrite=the-adventure-begins-framed-poster&controller=product#";
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.addedItemModalComp = new AddedItemModal(page);
     this.itemDescComp = new ItemDescription(page);
     this.breadCrumbComp = new BreadCrumbs(page);
     this.itemAmountManagerComp = new ItemAmountManager(page);
     this.addToCartComp = new AddToCart(page);
-    this.helper = new FunctionHelpers(page);
+  }
+
+  @step("Open item page")
+  async goTo() {
+    await this.page.goto(this.url);
   }
 
   @step("Add item to cart")

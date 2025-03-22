@@ -1,41 +1,34 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { FunctionHelpers } from "../../utils/helpers/FunctionHelpers";
 import { Search } from "../components/Search.component";
-import { Loader } from "../components/Loader.component";
 import { CartDisplay } from "../components/CartDisplay.component";
 import { UserIndicator } from "../components/UserIndicator.component";
-export class HomePage {
-  private page: Page;
+import { BasePage } from "./BasePage.abstract";
+export class HomePage extends BasePage {
   private search: Search;
-  private loader: Loader;
   private cartDisplay: CartDisplay;
   private userIndicator: UserIndicator;
-  private helper: FunctionHelpers;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.search = new Search(page);
-    this.loader = new Loader(page);
     this.cartDisplay = new CartDisplay(page);
     this.userIndicator = new UserIndicator(page);
-    this.helper = new FunctionHelpers(page);
   }
+
   @step("Open home page")
-  async goTo(url: string = "/") {
-    await this.page.goto(url);
+  async goTo() {
+    await this.page.goto("/");
   }
+
   @step("Fill search")
   async fillInSearch(searchValue: string) {
     await this.search.fillIn(searchValue);
   }
+
   @step("Search item")
   async searchForItem(searchValue: string) {
     await this.search.findItem(searchValue);
-  }
-  @step("Handle the loader")
-  async loaderHandler() {
-    await this.loader.becomeHidden();
   }
 
   @step("Open cart page")
