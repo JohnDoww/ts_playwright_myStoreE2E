@@ -1,14 +1,12 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class UserIndicator {
-  protected page: Page;
-  private signInLink: Locator;
-  profileLink: Locator;
+export class UserIndicator extends BaseComp {
+  private signInLink: Locator = this.page.locator(".user-info .hidden-sm-down");
+  readonly profileLink: Locator = this.page.locator("#_desktop_user_info");
 
   constructor(page: Page) {
-    this.page = page;
-    this.signInLink = page.locator(".user-info .hidden-sm-down");
-    this.profileLink = page.locator("#_desktop_user_info");
+    super(page);
   }
 
   async clickSignIn() {

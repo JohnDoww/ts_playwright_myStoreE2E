@@ -1,12 +1,12 @@
 import { Page, Locator } from "@playwright/test";
-export class ShippingMethod {
-  protected page: Page;
-  private submitBtn: Locator;
+import { BaseComp } from "./Base.component";
+export class ShippingMethod extends BaseComp {
+  private submitBtn: Locator = this.page.locator("#js-delivery button");
 
   constructor(page: Page) {
-    this.page = page;
-    this.submitBtn = page.locator("#js-delivery button");
+    super(page);
   }
+
   async submitInfo() {
     await this.submitBtn.waitFor();
     await this.submitBtn.click();

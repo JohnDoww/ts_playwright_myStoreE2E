@@ -1,11 +1,11 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class AddToCart {
-  protected page: Page;
-  private body: Locator;
+export class AddToCart extends BaseComp {
+  private body: Locator = this.page.locator(".product-add-to-cart .add");
 
   constructor(page: Page) {
-    this.body = page.locator(".product-add-to-cart .add");
+    super(page);
   }
 
   async clickOn() {

@@ -1,11 +1,10 @@
 import { Page, Locator } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class OrderConfirmed {
-  protected page: Page;
-  title: Locator;
+export class OrderConfirmed extends BaseComp {
+  readonly title: Locator = this.page.locator(".h1.card-title");
 
   constructor(page: Page) {
-    this.page = page;
-    this.title = page.locator(".h1.card-title");
+    super(page);
   }
 }

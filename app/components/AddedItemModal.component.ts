@@ -1,15 +1,12 @@
 import { Page, Locator } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class AddedItemModal {
-  protected page: Page;
-  private closeBtn: Locator;
-  title: Locator;
+export class AddedItemModal extends BaseComp {
+  readonly title: Locator = this.page.locator("#blockcart-modal.in");
+  private closeBtn: Locator = this.page.locator("#blockcart-modal .close");
 
   constructor(page: Page) {
-    this.page = page;
-
-    this.title = page.locator("#blockcart-modal.in");
-    this.closeBtn = page.locator("#blockcart-modal .close");
+    super(page);
   }
 
   async clickOnClose() {

@@ -1,18 +1,18 @@
 import { Page, Locator } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class CartSummary {
-  protected page: Page;
-  private removeItemBtn: Locator;
-  private proceedToCheckoutBtn: Locator;
-  addedItem: Locator;
-  amountPerAddedItem: Locator;
+export class CartSummary extends BaseComp {
+  private removeItemBtn: Locator = this.page.locator(
+    ".remove-from-cart .material-icons"
+  );
+  private proceedToCheckoutBtn: Locator = this.page.locator(".checkout .btn");
+  private addedItem: Locator = this.page.locator("li.cart-item");
+  private amountPerAddedItem: Locator = this.page.locator(
+    '[name="product-quantity-spin"]'
+  );
 
   constructor(page: Page) {
-    this.page = page;
-    this.addedItem = page.locator("li.cart-item");
-    this.amountPerAddedItem = page.locator('[name="product-quantity-spin"]');
-    this.removeItemBtn = page.locator(".remove-from-cart .material-icons");
-    this.proceedToCheckoutBtn = page.locator(".checkout .btn");
+    super(page);
   }
 
   async removeItem(itemOrder = 0) {

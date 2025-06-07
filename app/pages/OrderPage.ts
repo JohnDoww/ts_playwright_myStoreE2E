@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { ItemDescription } from "../components/ItemDescription.component";
+import { Item } from "../components/Item.component";
 import { OrderDeliveryForm } from "../components/OrderDeliveryForm.component";
 import { OrderConfirmed } from "../components/OrderConfirmed.component";
 import { PaymentForm } from "../components/PaymentForm.component";
@@ -8,7 +8,7 @@ import { ShippingMethod } from "../components/ShippingMethod.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class OrderPage extends BasePage {
-  private itemDescComp: ItemDescription;
+  private itemDescComp: Item;
   private orderDeliveryFormComp: OrderDeliveryForm;
   private orderConfirmedComp: OrderConfirmed;
   private paymentFormComp: PaymentForm;
@@ -17,7 +17,7 @@ export class OrderPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.itemDescComp = new ItemDescription(page);
+    this.itemDescComp = new Item(page);
     this.orderDeliveryFormComp = new OrderDeliveryForm(page);
     this.orderConfirmedComp = new OrderConfirmed(page);
     this.paymentFormComp = new PaymentForm(page);
@@ -49,6 +49,6 @@ export class OrderPage extends BasePage {
 
   @step("Get ordered item title")
   async getOrderedItemTitle() {
-    return this.itemDescComp.onCreatedOrder.title;
+    return this.itemDescComp.inCreatedOrder.title;
   }
 }

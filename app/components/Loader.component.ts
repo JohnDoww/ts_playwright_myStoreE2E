@@ -1,12 +1,11 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class Loader {
-  private page: Page;
-  private body: Locator;
+export class Loader extends BaseComp {
+  private body: Locator = this.page.locator(".overlay__content");
 
   constructor(page: Page) {
-    this.page = page;
-    this.body = page.locator(".overlay__content");
+    super(page);
   }
 
   async becomeHidden() {
