@@ -5,9 +5,9 @@ test.describe("Item", () => {
   guest(
     "STORE-004: Title from item preview match with titles on the item page",
     async ({ shopPages }) => {
-      const itemTitle = await shopPages.catalog.getItemTitle();
+      const itemTitle = await shopPages.catalog.getItemTitle(0);
 
-      await shopPages.catalog.openItem();
+      await shopPages.catalog.openItem(0);
 
       await expect(await shopPages.item.getBreadcrumb()).toContainText(
         itemTitle,

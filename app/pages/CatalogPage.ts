@@ -23,14 +23,15 @@ export class CatalogPage extends BasePage {
   }
 
   @step("Open item")
-  async openItem(itemOrder: number = 0) {
+  async openItem(itemOrder: number) {
     await this.page.waitForLoadState("load");
     await this.itemDesc.preview.title.nth(itemOrder).waitFor();
     await this.itemDesc.preview.title.nth(itemOrder).click();
     await this.page.waitForLoadState("load");
   }
 
-  async getItemTitle(itemOrder: number = 0) {
+  @step("Store the item title")
+  async getItemTitle(itemOrder: number) {
     const itemDescText = await this.helper.getElementText(
       this.itemDesc.preview.title.nth(itemOrder)
     );
@@ -90,6 +91,7 @@ export class CatalogPage extends BasePage {
       await this.page.waitForLoadState("load");
     }
   }
+
   @step("Get composition filters")
   async getCompositionFilters() {
     return await this.helper.returnAllLocators(

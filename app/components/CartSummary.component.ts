@@ -6,8 +6,8 @@ export class CartSummary extends BaseComp {
     ".remove-from-cart .material-icons"
   );
   private proceedToCheckoutBtn: Locator = this.page.locator(".checkout .btn");
-  private addedItem: Locator = this.page.locator("li.cart-item");
-  private amountPerAddedItem: Locator = this.page.locator(
+  readonly addedItem: Locator = this.page.locator("li.cart-item");
+  readonly amountPerAddedItem: Locator = this.page.locator(
     '[name="product-quantity-spin"]'
   );
 
