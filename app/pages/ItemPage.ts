@@ -3,14 +3,14 @@ import { step } from "../../utils/helpers/stepDecorator";
 import { AddToCart } from "../components/AddToCart.component";
 import { AddedItemModal } from "../components/AddedItemModal.component";
 import { BreadCrumbs } from "../components/BreadCrumbs.component";
-import { ItemDescription } from "../components/ItemDescription.component";
+import { Item } from "../components/Item.component";
 import { ItemAmountManager } from "../components/ItemAmountManager.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class ItemPage extends BasePage {
   private addToCartComp: AddToCart;
   private breadCrumbComp: BreadCrumbs;
-  private itemDescComp: ItemDescription;
+  private itemDescComp: Item;
   private addedItemModalComp: AddedItemModal;
   private itemAmountManagerComp: ItemAmountManager;
   private partOfRequestModalAppearing: string = "controller";
@@ -20,7 +20,7 @@ export class ItemPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.addedItemModalComp = new AddedItemModal(page);
-    this.itemDescComp = new ItemDescription(page);
+    this.itemDescComp = new Item(page);
     this.breadCrumbComp = new BreadCrumbs(page);
     this.itemAmountManagerComp = new ItemAmountManager(page);
     this.addToCartComp = new AddToCart(page);
@@ -66,7 +66,7 @@ export class ItemPage extends BasePage {
 
   @step("Get item title")
   async getTitle() {
-    await this.itemDescComp.onMain.title.waitFor();
-    return this.itemDescComp.onMain.title;
+    await this.itemDescComp.mainPage.title.waitFor();
+    return this.itemDescComp.mainPage.title;
   }
 }

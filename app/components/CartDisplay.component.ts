@@ -1,14 +1,12 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class CartDisplay {
-  protected page: Page;
-  private btn: Locator;
-  counter: Locator;
+export class CartDisplay extends BaseComp {
+  private btn: Locator = this.page.locator("#_desktop_cart");
+  readonly counter: Locator = this.page.locator(".header .cart-products-count");
 
   constructor(page: Page) {
-    this.page = page;
-    this.btn = page.locator("#_desktop_cart");
-    this.counter = page.locator(".header .cart-products-count");
+    super(page);
   }
 
   async clickOnBtn() {

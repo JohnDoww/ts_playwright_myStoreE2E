@@ -1,12 +1,13 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class RegistrationForm {
-  protected page: Page;
-  private saveUserBtn: Locator;
+export class RegistrationForm extends BaseComp {
+  private saveUserBtn: Locator = this.page.locator(
+    '[data-link-action="save-customer"]'
+  );
 
   constructor(page: Page) {
-    this.page = page;
-    this.saveUserBtn = page.locator('[data-link-action="save-customer"]');
+    super(page);
   }
 
   async clickSaveNewUserBtn() {

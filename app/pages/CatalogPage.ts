@@ -1,11 +1,11 @@
 import { Page, expect } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
-import { ItemDescription } from "../components/ItemDescription.component";
+import { Item } from "../components/Item.component";
 import { FilterSections } from "../components/FilterSections.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class CatalogPage extends BasePage {
-  private itemDesc: ItemDescription;
+  private itemDesc: Item;
   private filterSections: FilterSections;
   private url: string = "?id_category=2&controller=category";
   private requestAfterApplyingFilters: string =
@@ -13,7 +13,7 @@ export class CatalogPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.itemDesc = new ItemDescription(page);
+    this.itemDesc = new Item(page);
     this.filterSections = new FilterSections(page);
   }
 
@@ -23,24 +23,25 @@ export class CatalogPage extends BasePage {
   }
 
   @step("Open item")
-  async openItem(itemOrder: number = 0) {
+  async openItem(itemOrder: number) {
     await this.page.waitForLoadState("load");
-    await this.itemDesc.onPreview.title.nth(itemOrder).waitFor();
-    await this.itemDesc.onPreview.title.nth(itemOrder).click();
+    await this.itemDesc.preview.title.nth(itemOrder).waitFor();
+    await this.itemDesc.preview.title.nth(itemOrder).click();
     await this.page.waitForLoadState("load");
   }
 
-  async getItemTitle(itemOrder: number = 0) {
+  @step("Store the item title")
+  async getItemTitle(itemOrder: number) {
     const itemDescText = await this.helper.getElementText(
-      this.itemDesc.onPreview.title.nth(itemOrder)
+      this.itemDesc.preview.title.nth(itemOrder)
     );
     return itemDescText;
   }
 
   @step("Get all items description")
   async returnAllItemsDescriptionOnPage() {
-    await this.itemDesc.onPreview.title.last().waitFor();
-    return await this.itemDesc.onPreview.title.all();
+    await this.itemDesc.preview.title.last().waitFor();
+    return await this.itemDesc.preview.title.all();
   }
 
   @step("Click filter")
@@ -90,6 +91,7 @@ export class CatalogPage extends BasePage {
       await this.page.waitForLoadState("load");
     }
   }
+
   @step("Get composition filters")
   async getCompositionFilters() {
     return await this.helper.returnAllLocators(

@@ -46,4 +46,22 @@ test.describe("User flows", () => {
       { ignoreCase: true }
     );
   });
+
+  loginUser("STORE-011: Item added to wishlist", async ({ shopPages }) => {
+    const itemTitle = (await shopPages.catalog.getItemTitle(5)).toLowerCase();
+    await shopPages.home.addItemToWishlist(5);
+    await expect(
+      shopPages.home.getSuccessfullyAddedToWishlistMsg()
+    ).toBeVisible();
+
+    await shopPages.myAcc.goTo();
+    await shopPages.myAcc.openSettings("wishList");
+    await shopPages.myAcc.waitForLists();
+    expect(await shopPages.myAcc.getAmountOfItemsInWishList()).toEqual(1);
+
+    await shopPages.myAcc.openWishList("My wishlist");
+    expect(itemTitle).toEqual(
+      (await shopPages.myAcc.getItemTitleInWishList()).toLowerCase()
+    );
+  });
 });

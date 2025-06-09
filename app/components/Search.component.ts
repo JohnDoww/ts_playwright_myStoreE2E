@@ -1,14 +1,12 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class Search {
-  protected page: Page;
-  private input: Locator;
-  proposedItems: Locator;
+export class Search extends BaseComp {
+  private input: Locator = this.page.locator('[aria-label="Search"]');
+  readonly proposedItems: Locator = this.page.locator(".ui-menu-item");
 
   constructor(page: Page) {
-    this.page = page;
-    this.input = page.locator('[aria-label="Search"]');
-    this.proposedItems = page.locator(".ui-menu-item");
+    super(page);
   }
 
   async fillIn(searchValue: string) {

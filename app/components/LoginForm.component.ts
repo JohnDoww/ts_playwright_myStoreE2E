@@ -1,12 +1,11 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class LoginForm {
-  protected page: Page;
-  private createNewUserLink: Locator;
+export class LoginForm extends BaseComp {
+  private createNewUserLink: Locator = this.page.locator(".no-account a");
 
   constructor(page: Page) {
-    this.page = page;
-    this.createNewUserLink = page.locator(".no-account a");
+    super(page);
   }
 
   async clickOnNoAccount() {

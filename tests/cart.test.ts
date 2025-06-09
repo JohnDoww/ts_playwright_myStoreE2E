@@ -5,7 +5,7 @@ test.describe("Cart", () => {
   guest("STORE-005. Increase item quantity", async ({ shopPages }) => {
     let defaultAmountOfNeededItems = 1;
 
-    await shopPages.catalog.openItem();
+    await shopPages.catalog.openItem(0);
     await shopPages.item.addToCart();
     await shopPages.item.closeConfirmAddingModal();
     await shopPages.home.goToCart();
@@ -24,7 +24,7 @@ test.describe("Cart", () => {
   guest("STORE-006. Decrease item quantity", async ({ shopPages }) => {
     let amountOfItem = 1;
 
-    await shopPages.catalog.openItem();
+    await shopPages.catalog.openItem(0);
     await shopPages.item.changeAmountOfNeededItem("+");
     amountOfItem += 1;
 
@@ -44,7 +44,7 @@ test.describe("Cart", () => {
 
   guest("STORE-007. Delete all added items", async ({ shopPages }) => {
     let expectedAmountOfItemsInCart = 0;
-    await shopPages.catalog.openItem();
+    await shopPages.catalog.openItem(0);
     await shopPages.item.addToCart();
     expectedAmountOfItemsInCart += 1;
     await shopPages.item.closeConfirmAddingModal();
@@ -73,7 +73,7 @@ test.describe("Cart", () => {
       const cartItemsCounter = shopPages.home.getCartCounter();
       let expectedCartCounterValue = 1;
 
-      await shopPages.catalog.openItem();
+      await shopPages.catalog.openItem(0);
       await shopPages.item.addToCart();
       await shopPages.item.closeConfirmAddingModal();
 

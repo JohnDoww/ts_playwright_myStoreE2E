@@ -1,11 +1,10 @@
 import { Locator, Page } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class BreadCrumbs {
-  protected page: Page;
-  body: Locator;
+export class BreadCrumbs extends BaseComp {
+  readonly body: Locator = this.page.locator(".breadcrumb");
 
   constructor(page: Page) {
-    this.page = page;
-    this.body = page.locator(".breadcrumb");
+    super(page);
   }
 }

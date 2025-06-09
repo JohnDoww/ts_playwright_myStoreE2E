@@ -1,12 +1,13 @@
 import { Page, Locator } from "@playwright/test";
+import { BaseComp } from "./Base.component";
 
-export class OrderDeliveryForm {
-  protected page: Page;
-  private submitBtn: Locator;
+export class OrderDeliveryForm extends BaseComp {
+  private submitBtn: Locator = this.page.locator(
+    "#delivery-address .continue.btn"
+  );
 
   constructor(page: Page) {
-    this.page = page;
-    this.submitBtn = page.locator("#delivery-address .continue.btn");
+    super(page);
   }
 
   async submitInfo() {
