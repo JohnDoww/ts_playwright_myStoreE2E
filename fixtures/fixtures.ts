@@ -6,7 +6,7 @@ import { getNewRegUserStorageState } from "../utils/helpers/apiRequests";
 type ShopPages = {
   shopPages: PageHolder;
 };
-export const guest = test.extend<ShopPages>({
+export const guestTest = test.extend<ShopPages>({
   shopPages: async ({ page }, use) => {
     const shopPages = new PageHolder(page);
 
@@ -17,7 +17,7 @@ export const guest = test.extend<ShopPages>({
   }
 });
 
-export const loginUser = test.extend<ShopPages>({
+export const loginUserTest = test.extend<ShopPages>({
   shopPages: async ({ browser }, use) => {
     const savedStorageState = await getNewRegUserStorageState();
 
