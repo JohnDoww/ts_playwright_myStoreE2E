@@ -10,33 +10,36 @@ export class FunctionHelpers {
   @step("Wait response")
   responseWaiter(toInclude: string) {
     return this.page.waitForResponse((response) =>
-      response.url().includes(toInclude)
+      response.url().includes(toInclude),
     );
   }
 
   @step("Collect elements")
-  async returnAllLocators(locator) {
+  async returnAllLocators(locator: Locator) {
     await locator.first().waitFor();
-    const allSectionLocators = await locator.all();
-    return allSectionLocators;
+    return await locator.all();
   }
 
   @step("Wait item appearance")
-  async waitElementsAppearance(elements: Locator, neededAmount = 1) {
-    await elements.first().waitFor();
+  async waitElementsAppearance(elements: Locator, neededAmount: number) {
     await expect
       .poll(
         async () => {
-          let visibleItem = 0;
-          for (const el of await elements.all()) {
-            if (await el.isVisible()) visibleItem++;
+          const count = await elements.count();
+          let visibleItems = 0;
+
+          for (let i = 0; i < count; i++) {
+            await elements.nth(i).waitFor();
+            if (await elements.nth(i).isVisible()) {
+              visibleItems++;
+            }
           }
-          return visibleItem;
+          return visibleItems;
         },
         {
-          intervals: [500, 1_000],
-          timeout: 30_000
-        }
+          intervals: [500, 1000],
+          timeout: 15_000,
+        },
       )
       .toBeGreaterThanOrEqual(neededAmount);
   }
