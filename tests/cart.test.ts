@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { guest } from "../fixtures/fixtures";
 
-test.describe("Cart", () => {
-  guest("STORE-005. Increase item quantity", async ({ shopPages }) => {
+test.describe("Cart @S764cec0f", () => {
+  guest("STORE-005. Increase item quantity @T7db879e3", async ({ shopPages }) => {
     let defaultAmountOfNeededItems = 1;
 
     await shopPages.catalog.openItem(0);
@@ -21,7 +21,7 @@ test.describe("Cart", () => {
     expect(increasedAmountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
   });
 
-  guest("STORE-006. Decrease item quantity", async ({ shopPages }) => {
+  guest("STORE-006. Decrease item quantity @T7dc1fe4c", async ({ shopPages }) => {
     let amountOfItem = 1;
 
     await shopPages.catalog.openItem(0);
@@ -42,7 +42,7 @@ test.describe("Cart", () => {
     expect(amountOfAddedItem).toBe(`${amountOfItem}`);
   });
 
-  guest("STORE-007. Delete all added items", async ({ shopPages }) => {
+  guest("STORE-007. Delete all added items @Tb5d9d380", async ({ shopPages }) => {
     let expectedAmountOfItemsInCart = 0;
     await shopPages.catalog.openItem(0);
     await shopPages.item.addToCart();
@@ -68,7 +68,7 @@ test.describe("Cart", () => {
   });
 
   guest(
-    "STORE-008. Cart logo has indicator of items in",
+    "STORE-008. Cart logo has indicator of items in @T9521e891",
     async ({ shopPages }) => {
       const cartItemsCounter = shopPages.home.getCartCounter();
       let expectedCartCounterValue = 1;

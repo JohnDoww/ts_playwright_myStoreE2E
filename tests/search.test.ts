@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { guest } from "../fixtures/fixtures";
 
-test.describe("Search", () => {
+test.describe("Search @S75685dfd", () => {
   guest(
-    "STORE-001: Found items contain search word",
+    "STORE-001: Found items contain search word @T344bc703",
     async ({ shopPages }) => {
       const searchRequest = "Mug";
       await shopPages.home.searchForItem(searchRequest);
@@ -17,7 +17,7 @@ test.describe("Search", () => {
   );
 
   guest(
-    "STORE-002. Proposed items in search match with request",
+    "STORE-002. Proposed items in search match with request @Ta8b985b1",
     async ({ shopPages }) => {
       const searchRequest = "frame";
       await shopPages.home.fillInSearch(searchRequest);

@@ -3,10 +3,10 @@ import { guest, loginUser } from "../fixtures/fixtures";
 import { regData as testData } from "../utils/testData/registrationDataObjects";
 import dataGenerator from "../utils/testData/dataGenerator";
 
-test.describe("User flows", () => {
+test.describe("User flows @S2d56dfe0", () => {
   for (let inputData of testData) {
     guest(
-      `STORE-009:Registration with ${inputData.testTitle} data`,
+      `STORE-009:Registration with ${inputData.testTitle} data @Tdc9d6660`,
       async ({ shopPages }) => {
         await shopPages.userRegistration.openNewUserRegistrationPage();
         await shopPages.userRegistration.fillRegistrationForm(inputData);
@@ -22,7 +22,7 @@ test.describe("User flows", () => {
     );
   }
 
-  loginUser("STORE-010: Order item", async ({ shopPages }) => {
+  loginUser("STORE-010: Order item @T6f9bde41", async ({ shopPages }) => {
     const successOrderMsgText = "Your order is confirmed";
 
     await shopPages.catalog.openItem(4);
@@ -47,7 +47,7 @@ test.describe("User flows", () => {
     );
   });
 
-  loginUser("STORE-011: Item added to wishlist", async ({ shopPages }) => {
+  loginUser("STORE-011: Item added to wishlist @T104426a8", async ({ shopPages }) => {
     const itemTitle = (await shopPages.catalog.getItemTitle(5)).toLowerCase();
     await shopPages.home.addItemToWishlist(5);
     await expect(
