@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { guest } from "../fixtures/fixtures";
 
-test.describe("Search @S75685dfd", () => {
+test.describe("Search", { tag: "@S75685dfd" }, () => {
   guest(
-    "STORE-001: Found items contain search word @T344bc703",
+    "STORE-001: Found items contain search word",
+    { tag: "@T1a2b3c4d5" },
     async ({ shopPages }) => {
       const searchRequest = "Mug";
       await shopPages.home.searchForItem(searchRequest);
@@ -17,7 +18,8 @@ test.describe("Search @S75685dfd", () => {
   );
 
   guest(
-    "STORE-002. Proposed items in search match with request @Ta8b985b1",
+    "STORE-002. Proposed items in search match with request",
+    { tag: "@T2b3c4d5e6" },
     async ({ shopPages }) => {
       const searchRequest = "frame";
       await shopPages.home.fillInSearch(searchRequest);
