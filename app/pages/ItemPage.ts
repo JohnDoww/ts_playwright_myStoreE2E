@@ -38,14 +38,14 @@ export class ItemPage extends BasePage {
       this.partOfRequestModalAppearing
     );
 
-    await this.addToCartComp.clickOn();
+    await this.addToCartComp.clickOnBtn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }
 
   @step("Handle confirm modal after item adding")
   async closeConfirmAddingModal() {
-    await this.addedItemModalComp.clickOnClose();
+    await this.addedItemModalComp.clickOnCloseBtn();
     await this.addedItemModalComp.title.waitFor({ state: "hidden" });
   }
 
