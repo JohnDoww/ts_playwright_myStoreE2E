@@ -1,21 +1,18 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { Item } from "../components/Item.component";
 import { FilterSections } from "../components/FilterSections.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class CatalogPage extends BasePage {
-  private itemDesc: Item;
-  private filterSections: FilterSections;
   private url: string = "?id_category=2&controller=category";
   private requestAfterApplyingFilters: string =
     "module=productcomments&controller=CommentGrade";
 
-  constructor(page: Page) {
-    super(page);
-    this.itemDesc = new Item(page);
-    this.filterSections = new FilterSections(page);
-  }
+  private itemDesc: Item = new Item(this.page);
+  private filterSections: FilterSections = new FilterSections(this.page);
+
+
 
   @step("Open catalog page")
   async goTo() {
@@ -94,8 +91,8 @@ export class CatalogPage extends BasePage {
 
   @step("Get composition filters")
   async getCompositionFilters() {
-    return await this.helper.returnAllLocators(
-      this.filterSections.compositionSection
-    );
+    const sectionFilters =
+      await this.filterSections.getCompositionSectionFilters();
+    return await this.helper.returnAllLocators(sectionFilters);
   }
 }

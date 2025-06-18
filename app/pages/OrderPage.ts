@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { Item } from "../components/Item.component";
 import { OrderDeliveryForm } from "../components/OrderDeliveryForm.component";
@@ -8,21 +7,12 @@ import { ShippingMethod } from "../components/ShippingMethod.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class OrderPage extends BasePage {
-  private itemDescComp: Item;
-  private orderDeliveryFormComp: OrderDeliveryForm;
-  private orderConfirmedComp: OrderConfirmed;
-  private paymentFormComp: PaymentForm;
-  private shippingMethodComp: ShippingMethod;
+  private itemDescComp: Item= new Item(this.page);
+  private orderDeliveryFormComp: OrderDeliveryForm = new OrderDeliveryForm(this.page);
+  private orderConfirmedComp: OrderConfirmed= new OrderConfirmed(this.page);
+  private paymentFormComp: PaymentForm = new PaymentForm(this.page);
+  private shippingMethodComp: ShippingMethod = new ShippingMethod(this.page);
   private url: string = "?controller=order";
-
-  constructor(page: Page) {
-    super(page);
-    this.itemDescComp = new Item(page);
-    this.orderDeliveryFormComp = new OrderDeliveryForm(page);
-    this.orderConfirmedComp = new OrderConfirmed(page);
-    this.paymentFormComp = new PaymentForm(page);
-    this.shippingMethodComp = new ShippingMethod(page);
-  }
 
   @step("Open order page")
   async goTo() {
@@ -38,13 +28,11 @@ export class OrderPage extends BasePage {
     await this.paymentFormComp.setPaymentByBank();
     await this.paymentFormComp.acceptTerms();
     await this.paymentFormComp.submitInfo();
-
-    await this.orderConfirmedComp.title.waitFor();
   }
 
   @step("Get order confirmation title")
   async getOrderConfirmationTitle() {
-    return this.orderConfirmedComp.title;
+    return this.orderConfirmedComp.getTitleLocator();
   }
 
   @step("Get ordered item title")

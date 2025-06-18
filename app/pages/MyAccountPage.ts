@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "./BasePage.abstract";
 import { UserIndicator } from "../components/UserIndicator.component";
 import { SettingsTales } from "../components/SettingsTales.component";
@@ -7,18 +6,10 @@ import { Item } from "../components/Item.component";
 import { step } from "../../utils/helpers/stepDecorator";
 
 export class MyAccountPage extends BasePage {
-  private userIndicatorComp: UserIndicator;
-  private settingsTalesComp: SettingsTales;
-  private wishListComp: WishList;
-  private itemComp: Item;
-
-  constructor(page: Page) {
-    super(page);
-    this.wishListComp = new WishList(page);
-    this.settingsTalesComp = new SettingsTales(page);
-    this.userIndicatorComp = new UserIndicator(page);
-    this.itemComp = new Item(page);
-  }
+  private userIndicatorComp: UserIndicator = new UserIndicator(this.page);
+  private settingsTalesComp: SettingsTales=new SettingsTales(this.page);
+  private wishListComp: WishList = new WishList(this.page);
+  private itemComp: Item = new Item(this.page);
 
   @step("Go to MyAccount page")
   async goTo() {

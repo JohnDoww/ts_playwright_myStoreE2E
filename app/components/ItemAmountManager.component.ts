@@ -1,14 +1,10 @@
-import { Page, Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { BaseComp } from "./Base.component";
 
 export class ItemAmountManager extends BaseComp {
   private more: Locator = this.page.locator(".bootstrap-touchspin-up");
   private less: Locator = this.page.locator(".bootstrap-touchspin-down");
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   @step("Amount increased")
   async increase() {

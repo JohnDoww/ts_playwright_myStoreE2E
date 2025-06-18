@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { Search } from "../components/Search.component";
 import { CartDisplay } from "../components/CartDisplay.component";
@@ -7,20 +7,11 @@ import { Item } from "../components/Item.component";
 import { BasePage } from "./BasePage.abstract";
 import { WishListModal } from "../components/WishListModal.component";
 export class HomePage extends BasePage {
-  private search: Search;
-  private cartDisplay: CartDisplay;
-  private userIndicator: UserIndicator;
-  private itemComp: Item;
-  private wishListModalComp: WishListModal;
-
-  constructor(page: Page) {
-    super(page);
-    this.search = new Search(page);
-    this.cartDisplay = new CartDisplay(page);
-    this.userIndicator = new UserIndicator(page);
-    this.itemComp = new Item(page);
-    this.wishListModalComp = new WishListModal(page);
-  }
+  private search: Search = new Search(this.page);
+  private cartDisplay: CartDisplay = new CartDisplay(this.page);
+  private userIndicator: UserIndicator = new UserIndicator(this.page);
+  private itemComp: Item = new Item(this.page);
+  private wishListModalComp: WishListModal = new WishListModal(this.page);
 
   @step("Open home page")
   async goTo() {
@@ -39,11 +30,12 @@ export class HomePage extends BasePage {
 
   @step("Open cart page")
   async goToCart() {
-    await this.cartDisplay.clickOnBtn();
+    await this.cartDisplay.clickBtn();
   }
 
-  getCartCounter() {
-    return this.cartDisplay.counter;
+  async getCartCounter() {
+    const counterLocator = await this.cartDisplay.getCounterLocator();
+    return counterLocator;
   }
 
   @step("Open login page")

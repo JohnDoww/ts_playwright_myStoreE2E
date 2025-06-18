@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class PaymentForm extends BaseComp {
@@ -9,10 +9,6 @@ export class PaymentForm extends BaseComp {
   private acceptTermsCheckbox: Locator = this.page.locator(
     "#conditions-to-approve"
   );
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   async acceptTerms() {
     await this.acceptTermsCheckbox.waitFor();
