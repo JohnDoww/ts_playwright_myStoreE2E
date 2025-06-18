@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class Item extends BaseComp {
@@ -24,10 +24,6 @@ export class Item extends BaseComp {
   readonly addedToWishListSuccessMsg: Locator = this.page.locator(
     ".wishlist-toast.isActive p"
   );
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   async clickOnFavoritesBtn(itemOrder: number) {
     await this.preview.itemCard

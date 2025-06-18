@@ -1,10 +1,12 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class BreadCrumbs extends BaseComp {
-  readonly body: Locator = this.page.locator(".breadcrumb");
+  private body: Locator = this.page.locator(".breadcrumb");
 
-  constructor(page: Page) {
-    super(page);
+  async getLocator(){
+    await this.body.waitFor();
+    return this.body;
   }
+
 }

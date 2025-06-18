@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { guest } from "../fixtures/fixtures";
 
-test.describe("Cart", { tag: "@S764cec0f" }, () => {
+guest.describe("Cart", { tag: "@S764cec0f" }, () => {
   guest(
     "STORE-005. Increase item quantity",
     { tag: "@T7db879e3" },
@@ -83,7 +83,7 @@ test.describe("Cart", { tag: "@S764cec0f" }, () => {
     "STORE-008. Cart logo has indicator of items inside",
     { tag: "@T9521e891" },
     async ({ shopPages }) => {
-      const cartItemsCounter = shopPages.home.getCartCounter();
+      const cartItemsCounter = await shopPages.home.getCartCounter();
       let expectedCartCounterValue = 1;
 
       await shopPages.catalog.openItem(0);

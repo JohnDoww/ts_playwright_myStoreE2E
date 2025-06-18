@@ -5,8 +5,13 @@ export class AddedItemModal extends BaseComp {
   private title: Locator = this.page.locator("#blockcart-modal.in");
   private closeBtn: Locator = this.page.locator("#blockcart-modal .close");
 
-  async clickOnCloseBtn() {
+  async clickCloseBtn() {
     await this.closeBtn.waitFor({ state: "visible" });
     await this.closeBtn.click();
+  }
+
+  async getTitleLocator() {
+    await this.title.waitFor();
+    return this.title;
   }
 }

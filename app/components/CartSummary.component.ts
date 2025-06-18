@@ -1,25 +1,27 @@
-import { Page, Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class CartSummary extends BaseComp {
-  private removeItemBtn: Locator = this.page.locator(
-    ".remove-from-cart .material-icons"
-  );
+  private removeItemBtn: Locator = this.page.locator(".remove-from-cart .material-icons");
   private proceedToCheckoutBtn: Locator = this.page.locator(".checkout .btn");
-  readonly addedItem: Locator = this.page.locator("li.cart-item");
-  readonly amountPerAddedItem: Locator = this.page.locator(
-    '[name="product-quantity-spin"]'
-  );
+  private addedItem: Locator = this.page.locator("li.cart-item");
+  private amountPerAddedItem: Locator = this.page.locator('[name="product-quantity-spin"]');
 
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async removeItem(itemOrder = 0) {
+  async clickRemoveItemBtn(itemOrder: number) {
     await this.removeItemBtn.nth(itemOrder).click();
   }
 
-  async clickOnProceedToCheckoutBtn() {
+  async clickProceedToCheckoutBtn() {
     await this.proceedToCheckoutBtn.click();
+  }
+
+  async getAddedItemLocator(){
+    await this.addedItem.waitFor();
+    return this.addedItem;
+  }
+
+  async getAmountPerItemLocator(itemOrder:number){
+    await this.amountPerAddedItem.nth(itemOrder).waitFor();
+    return this.amountPerAddedItem.nth(itemOrder);
   }
 }
