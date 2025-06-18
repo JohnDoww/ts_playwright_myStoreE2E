@@ -37,8 +37,8 @@ export class ItemPage extends BasePage {
 
   @step("Handle confirm modal after item adding")
   async closeConfirmAddingModal() {
-    await this.addedItemModalComp.clickCloseBtn();
     const addedItemModalTitle = await this.addedItemModalComp.getTitleLocator();
+    await this.addedItemModalComp.clickCloseBtn();
     await addedItemModalTitle.waitFor({ state: "hidden" });
   }
 

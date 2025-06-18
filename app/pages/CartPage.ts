@@ -26,9 +26,7 @@ export class CartPage extends BasePage {
   @step("Get all added item")
   async allAddedItem() {
     await this.waitItemsAppearance();
-    return await this.helper.returnAllLocators(
-      await this.cartSummaryComp.getAddedItemLocator()
-    );
+    return await this.helper.returnAllLocators(this.cartSummaryComp.getAddedItemLocator());
   }
 
   @step("Get amount of added item")

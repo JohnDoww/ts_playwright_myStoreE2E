@@ -15,8 +15,7 @@ export class FilterSections extends BaseComp {
     return checkboxForFilter;
   }
 
-  async getCompositionSectionFilters(){
-    await this.compositionSection.waitFor();
+  getCompositionSectionFilters() {
     return this.compositionSection;
   }
 }

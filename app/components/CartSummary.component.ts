@@ -15,12 +15,11 @@ export class CartSummary extends BaseComp {
     await this.proceedToCheckoutBtn.click();
   }
 
-  async getAddedItemLocator(){
-    await this.addedItem.waitFor();
+  getAddedItemLocator() {
     return this.addedItem;
   }
 
-  async getAmountPerItemLocator(itemOrder:number){
+  async getAmountPerItemLocator(itemOrder: number) {
     await this.amountPerAddedItem.nth(itemOrder).waitFor();
     return this.amountPerAddedItem.nth(itemOrder);
   }
