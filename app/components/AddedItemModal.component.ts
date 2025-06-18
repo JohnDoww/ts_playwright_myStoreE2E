@@ -2,7 +2,7 @@ import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class AddedItemModal extends BaseComp {
-  private title: Locator = this.page.locator("#blockcart-modal.in");
+  readonly title: Locator = this.page.locator("#blockcart-modal.in");
   private closeBtn: Locator = this.page.locator("#blockcart-modal .close");
 
   async clickCloseBtn() {
