@@ -17,7 +17,6 @@ export class ItemPage extends BasePage {
   private addedItemModalComp: AddedItemModal = new AddedItemModal(this.page);
   private itemAmountManagerComp: ItemAmountManager = new ItemAmountManager(this.page);
 
-
   @step("Open item page")
   async goTo() {
     await this.page.goto(this.url);
