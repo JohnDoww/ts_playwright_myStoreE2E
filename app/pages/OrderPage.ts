@@ -7,9 +7,9 @@ import { ShippingMethod } from "../components/ShippingMethod.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class OrderPage extends BasePage {
-  private itemDescComp: Item= new Item(this.page);
+  private itemDescComp: Item = new Item(this.page);
   private orderDeliveryFormComp: OrderDeliveryForm = new OrderDeliveryForm(this.page);
-  private orderConfirmedComp: OrderConfirmed= new OrderConfirmed(this.page);
+  private orderConfirmedComp: OrderConfirmed = new OrderConfirmed(this.page);
   private paymentFormComp: PaymentForm = new PaymentForm(this.page);
   private shippingMethodComp: ShippingMethod = new ShippingMethod(this.page);
   private url: string = "?controller=order";
@@ -22,12 +22,12 @@ export class OrderPage extends BasePage {
   @step("Pass order creation form")
   async passOrderCreationForm(shippingData) {
     await this.helper.fillForm(shippingData);
-    await this.orderDeliveryFormComp.submitInfo();
-    await this.shippingMethodComp.submitInfo();
+    await this.orderDeliveryFormComp.clickSubmitBtn();
+    await this.shippingMethodComp.clickSubmitBtn();
 
     await this.paymentFormComp.setPaymentByBank();
-    await this.paymentFormComp.acceptTerms();
-    await this.paymentFormComp.submitInfo();
+    await this.paymentFormComp.clickAcceptTermsCheckbox();
+    await this.paymentFormComp.clickSubmitBtn();
   }
 
   @step("Get order confirmation title")

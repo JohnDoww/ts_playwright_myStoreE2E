@@ -20,15 +20,15 @@ export class MyAccountPage extends BasePage {
   async openSettings(section: "wishList" | "myInformation") {
     switch (section) {
     case "wishList":
-      await this.settingsTalesComp.myWishlistSettings.click();
+      await this.settingsTalesComp.clickMyWishlistTile();
       break;
     case "myInformation":
-      await this.settingsTalesComp.myInformationSettings.click();
+      await this.settingsTalesComp.clickMyInformationTile();
       break;
     }
   }
 
-  @step("Get num of items  inside the list")
+  @step("Get num of items inside the list")
   async getAmountOfItemsInWishList(
     listName: string = "My wishlist"
   ): Promise<number> {

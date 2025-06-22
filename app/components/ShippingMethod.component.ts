@@ -3,7 +3,7 @@ import { BaseComp } from "./Base.component";
 export class ShippingMethod extends BaseComp {
   private submitBtn: Locator = this.page.locator("#js-delivery button");
 
-  async submitInfo() {
+  async clickSubmitBtn() {
     await this.submitBtn.waitFor();
     await this.submitBtn.click();
   }
