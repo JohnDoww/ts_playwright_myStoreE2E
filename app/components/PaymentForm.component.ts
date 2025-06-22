@@ -1,20 +1,12 @@
-import { Page, Locator } from "@playwright/test";
+import { Locator } from "@playwright/test";
 import { BaseComp } from "./Base.component";
 
 export class PaymentForm extends BaseComp {
-  private submitBtn: Locator = this.page.locator(
-    "#payment-confirmation button"
-  );
+  private submitBtn: Locator = this.page.locator("#payment-confirmation button");
   private payByBankCheckbox: Locator = this.page.locator("#payment-option-1");
-  private acceptTermsCheckbox: Locator = this.page.locator(
-    "#conditions-to-approve"
-  );
+  private acceptTermsCheckbox: Locator = this.page.locator("#conditions-to-approve");
 
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async acceptTerms() {
+  async clickAcceptTermsCheckbox() {
     await this.acceptTermsCheckbox.waitFor();
     await this.acceptTermsCheckbox.click();
   }
@@ -24,7 +16,7 @@ export class PaymentForm extends BaseComp {
     await this.payByBankCheckbox.click();
   }
 
-  async submitInfo() {
+  async clickSubmitBtn() {
     await this.submitBtn.waitFor();
     await this.submitBtn.click();
   }

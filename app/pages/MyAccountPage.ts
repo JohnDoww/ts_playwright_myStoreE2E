@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "./BasePage.abstract";
 import { UserIndicator } from "../components/UserIndicator.component";
 import { SettingsTales } from "../components/SettingsTales.component";
@@ -7,18 +6,10 @@ import { Item } from "../components/Item.component";
 import { step } from "../../utils/helpers/stepDecorator";
 
 export class MyAccountPage extends BasePage {
-  private userIndicatorComp: UserIndicator;
-  private settingsTalesComp: SettingsTales;
-  private wishListComp: WishList;
-  private itemComp: Item;
-
-  constructor(page: Page) {
-    super(page);
-    this.wishListComp = new WishList(page);
-    this.settingsTalesComp = new SettingsTales(page);
-    this.userIndicatorComp = new UserIndicator(page);
-    this.itemComp = new Item(page);
-  }
+  private userIndicatorComp: UserIndicator = new UserIndicator(this.page);
+  private settingsTalesComp: SettingsTales = new SettingsTales(this.page);
+  private wishListComp: WishList = new WishList(this.page);
+  private itemComp: Item = new Item(this.page);
 
   @step("Go to MyAccount page")
   async goTo() {
@@ -29,15 +20,15 @@ export class MyAccountPage extends BasePage {
   async openSettings(section: "wishList" | "myInformation") {
     switch (section) {
     case "wishList":
-      await this.settingsTalesComp.myWishlistSettings.click();
+      await this.settingsTalesComp.clickMyWishlistTile();
       break;
     case "myInformation":
-      await this.settingsTalesComp.myInformationSettings.click();
+      await this.settingsTalesComp.clickMyInformationTile();
       break;
     }
   }
 
-  @step("Get num of items  inside the list")
+  @step("Get num of items inside the list")
   async getAmountOfItemsInWishList(
     listName: string = "My wishlist"
   ): Promise<number> {
@@ -60,9 +51,9 @@ export class MyAccountPage extends BasePage {
   }
 
   @step("Get item title from wishlist")
-  async getItemTitleInWishList(itemOrder: number = 0): Promise<string> {
+  async getItemTitleInWishList(itemOrder: number): Promise<string> {
     const itemDescText = await this.helper.getElementText(
-      this.itemComp.preview.titleInWishList.nth(itemOrder)
+      this.itemComp.getTitleLocator("inWishList").nth(itemOrder)
     );
     return itemDescText;
   }

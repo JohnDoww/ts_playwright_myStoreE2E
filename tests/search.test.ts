@@ -1,23 +1,22 @@
-import { expect, test } from "@playwright/test";
-import { guest } from "../fixtures/fixtures";
+import { expect } from "@playwright/test";
+import { guestTest } from "../fixtures/fixtures";
 
-test.describe("Search", { tag: "@S75685dfd" }, () => {
-  guest(
+guestTest.describe("Search", { tag: "@S75685dfd" }, () => {
+  guestTest(
     "STORE-001: Found items contain search word",
     { tag: "@T1a2b3c4d5" },
     async ({ shopPages }) => {
       const searchRequest = "Mug";
       await shopPages.home.searchForItem(searchRequest);
-      const allItems =
-        await shopPages.catalog.returnAllItemsDescriptionOnPage();
+      const allItems = await shopPages.catalog.returnAllItemsDescriptionOnPage();
 
       for (let item of allItems) {
         await expect(item).toContainText(searchRequest, { ignoreCase: true });
       }
     }
-  );
+  ) ;
 
-  guest(
+  guestTest(
     "STORE-002. Proposed items in search match with request",
     { tag: "@T2b3c4d5e6" },
     async ({ shopPages }) => {

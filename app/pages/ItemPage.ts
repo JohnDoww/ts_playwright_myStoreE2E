@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { step } from "../../utils/helpers/stepDecorator";
 import { AddToCart } from "../components/AddToCart.component";
 import { AddedItemModal } from "../components/AddedItemModal.component";
@@ -8,23 +7,15 @@ import { ItemAmountManager } from "../components/ItemAmountManager.component";
 import { BasePage } from "./BasePage.abstract";
 
 export class ItemPage extends BasePage {
-  private addToCartComp: AddToCart;
-  private breadCrumbComp: BreadCrumbs;
-  private itemDescComp: Item;
-  private addedItemModalComp: AddedItemModal;
-  private itemAmountManagerComp: ItemAmountManager;
-  private partOfRequestModalAppearing: string = "controller";
   private url: string =
     "?id_product=4&id_product_attribute=16&rewrite=the-adventure-begins-framed-poster&controller=product#";
+  private partOfRequestModalAppearing: string = "controller";
 
-  constructor(page: Page) {
-    super(page);
-    this.addedItemModalComp = new AddedItemModal(page);
-    this.itemDescComp = new Item(page);
-    this.breadCrumbComp = new BreadCrumbs(page);
-    this.itemAmountManagerComp = new ItemAmountManager(page);
-    this.addToCartComp = new AddToCart(page);
-  }
+  private addToCartComp: AddToCart = new AddToCart(this.page);
+  private breadCrumbComp: BreadCrumbs = new BreadCrumbs(this.page);
+  private itemDescComp: Item = new Item(this.page);
+  private addedItemModalComp: AddedItemModal = new AddedItemModal(this.page);
+  private itemAmountManagerComp: ItemAmountManager = new ItemAmountManager(this.page);
 
   @step("Open item page")
   async goTo() {
@@ -38,15 +29,16 @@ export class ItemPage extends BasePage {
       this.partOfRequestModalAppearing
     );
 
-    await this.addToCartComp.clickOn();
+    await this.addToCartComp.clickBtn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }
 
   @step("Handle confirm modal after item adding")
   async closeConfirmAddingModal() {
-    await this.addedItemModalComp.clickOnClose();
-    await this.addedItemModalComp.title.waitFor({ state: "hidden" });
+    const addedItemModalTitle = await this.addedItemModalComp.getTitleLocator();
+    await this.addedItemModalComp.clickCloseBtn();
+    await addedItemModalTitle.waitFor({ state: "hidden" });
   }
 
   @step("Change amount of needed item")
@@ -60,13 +52,12 @@ export class ItemPage extends BasePage {
 
   @step("Get breadcrumb")
   async getBreadcrumb() {
-    await this.breadCrumbComp.body.waitFor();
-    return this.breadCrumbComp.body;
+    return this.breadCrumbComp.getLocator();
   }
 
   @step("Get item title")
   async getTitle() {
-    await this.itemDescComp.mainPage.title.waitFor();
-    return this.itemDescComp.mainPage.title;
+    await this.itemDescComp.getTitleLocator("mainPage").waitFor();
+    return this.itemDescComp.getTitleLocator("mainPage");
   }
 }

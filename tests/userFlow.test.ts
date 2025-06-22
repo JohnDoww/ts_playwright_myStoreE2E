@@ -1,11 +1,11 @@
-import { test, expect } from "@playwright/test";
-import { guest, loginUser } from "../fixtures/fixtures";
+import { expect } from "@playwright/test";
+import { guestTest, loginUserTest } from "../fixtures/fixtures";
 import { regData as testData } from "../utils/testData/registrationDataObjects";
 import dataGenerator from "../utils/testData/dataGenerator";
 
-test.describe("User flows", { tag: "@S2d56dfe0" }, () => {
+guestTest.describe("User flows", { tag: "@S2d56dfe0" }, () => {
   for (let inputData of testData) {
-    guest(
+    guestTest(
       `STORE-009:Registration with ${inputData.testTitle} data`,
       { tag: "@Tdc9d6660" },
       async ({ shopPages }) => {
@@ -23,7 +23,7 @@ test.describe("User flows", { tag: "@S2d56dfe0" }, () => {
     );
   }
 
-  loginUser(
+  loginUserTest(
     "STORE-010: Order item",
     { tag: "@T6f9bde41" },
     async ({ shopPages }) => {
@@ -52,7 +52,7 @@ test.describe("User flows", { tag: "@S2d56dfe0" }, () => {
     }
   );
 
-  loginUser(
+  loginUserTest(
     "STORE-011: Item added to wishlist",
     { tag: "@T104426a8" },
     async ({ shopPages }) => {
@@ -69,7 +69,7 @@ test.describe("User flows", { tag: "@S2d56dfe0" }, () => {
 
       await shopPages.myAcc.openWishList("My wishlist");
       expect(itemTitle).toEqual(
-        (await shopPages.myAcc.getItemTitleInWishList()).toLowerCase()
+        (await shopPages.myAcc.getItemTitleInWishList(0)).toLowerCase()
       );
     }
   );
