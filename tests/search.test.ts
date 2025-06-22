@@ -14,7 +14,7 @@ guestTest.describe("Search", { tag: "@S75685dfd" }, () => {
         await expect(item).toContainText(searchRequest, { ignoreCase: true });
       }
     }
-  );
+  ) ;
 
   guestTest(
     "STORE-002. Proposed items in search match with request",
