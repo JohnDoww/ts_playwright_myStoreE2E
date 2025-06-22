@@ -23,7 +23,6 @@ export class FunctionHelpers {
 
   @step("Wait item appearance")
   async waitElementsAppearance(elements: Locator, neededAmount:number) {
-    await elements.first().waitFor();
     await expect
       .poll(
         async () => {
