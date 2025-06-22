@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
-import { guest } from "../fixtures/fixtures";
+import { expect } from "@playwright/test";
+import { guestTest } from "../fixtures/fixtures";
 
-test.describe("Item", { tag: "@Sbfd0a3d8" }, () => {
-  guest(
+guestTest.describe("Item", { tag: "@Sbfd0a3d8" }, () => {
+  guestTest(
     "STORE-004: Title from item preview match with titles on the item page",
     { tag: "@T1d846792" },
     async ({ shopPages }) => {

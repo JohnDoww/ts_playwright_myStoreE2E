@@ -1,8 +1,8 @@
 import { expect } from "@playwright/test";
-import { guest } from "../fixtures/fixtures";
+import { guestTest } from "../fixtures/fixtures";
 
-guest.describe("Cart", { tag: "@S764cec0f" }, () => {
-  guest(
+guestTest.describe("Cart", { tag: "@S764cec0f" }, () => {
+  guestTest(
     "STORE-005. Increase item quantity",
     { tag: "@T7db879e3" },
     async ({ shopPages }) => {
@@ -25,7 +25,7 @@ guest.describe("Cart", { tag: "@S764cec0f" }, () => {
     }
   );
 
-  guest(
+  guestTest(
     "STORE-006. Decrease item quantity",
     { tag: "@T7dc1fe4c" },
     async ({ shopPages }) => {
@@ -50,7 +50,7 @@ guest.describe("Cart", { tag: "@S764cec0f" }, () => {
     }
   );
 
-  guest(
+  guestTest(
     "STORE-007. Delete all added items",
     { tag: "@T2b5d9d380" },
     async ({ shopPages }) => {
@@ -79,7 +79,7 @@ guest.describe("Cart", { tag: "@S764cec0f" }, () => {
     }
   );
 
-  guest(
+  guestTest(
     "STORE-008. Cart logo has indicator of items inside",
     { tag: "@T9521e891" },
     async ({ shopPages }) => {
