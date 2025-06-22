@@ -12,6 +12,6 @@ export class LoginPage extends BasePage {
 
   @step("Follow to registration form")
   async followToRegForm() {
-    await this.loginFormComp.clickOnNoAccount();
+    await this.loginFormComp.clickNoAccountBtn();
   }
 }

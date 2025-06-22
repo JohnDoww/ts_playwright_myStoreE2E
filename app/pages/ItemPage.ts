@@ -57,7 +57,7 @@ export class ItemPage extends BasePage {
 
   @step("Get item title")
   async getTitle() {
-    await this.itemDescComp.mainPage.title.waitFor();
-    return this.itemDescComp.mainPage.title;
+    await this.itemDescComp.getTitleLocator("mainPage").waitFor();
+    return this.itemDescComp.getTitleLocator("mainPage");
   }
 }

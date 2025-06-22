@@ -21,7 +21,7 @@ export class UserRegistrationPage extends BasePage {
   @step("Open user registration page")
   async openNewUserRegistrationPage() {
     await this.homePage.clickSignInLink();
-    await this.logFormComp.clickOnNoAccount();
+    await this.logFormComp.clickNoAccountBtn();
     await this.page.waitForLoadState();
   }
 

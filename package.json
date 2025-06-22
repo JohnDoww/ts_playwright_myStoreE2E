@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install"
+    "eslint-fix": "npx eslint . --fix"
   },
   "author": "",
   "license": "ISC",

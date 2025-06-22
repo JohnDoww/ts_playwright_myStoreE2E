@@ -37,6 +37,6 @@ export class OrderPage extends BasePage {
 
   @step("Get ordered item title")
   async getOrderedItemTitle() {
-    return this.itemDescComp.inCreatedOrder.title;
+    return this.itemDescComp.getTitleLocator("inCreatedOrder");
   }
 }

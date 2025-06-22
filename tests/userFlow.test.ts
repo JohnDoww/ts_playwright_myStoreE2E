@@ -69,7 +69,7 @@ test.describe("User flows", { tag: "@S2d56dfe0" }, () => {
 
       await shopPages.myAcc.openWishList("My wishlist");
       expect(itemTitle).toEqual(
-        (await shopPages.myAcc.getItemTitleInWishList()).toLowerCase()
+        (await shopPages.myAcc.getItemTitleInWishList(0)).toLowerCase()
       );
     }
   );

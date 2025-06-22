@@ -8,8 +8,7 @@ test.describe("Search", { tag: "@S75685dfd" }, () => {
     async ({ shopPages }) => {
       const searchRequest = "Mug";
       await shopPages.home.searchForItem(searchRequest);
-      const allItems =
-        await shopPages.catalog.returnAllItemsDescriptionOnPage();
+      const allItems = await shopPages.catalog.returnAllItemsDescriptionOnPage();
 
       for (let item of allItems) {
         await expect(item).toContainText(searchRequest, { ignoreCase: true });

@@ -53,12 +53,12 @@ export class HomePage extends BasePage {
     itemToAdd: number = 0,
     wishList: string = "My wishlist"
   ) {
-    await this.itemComp.clickOnFavoritesBtn(itemToAdd);
+    await this.itemComp.clickAddToFavoritesBtn("preview", itemToAdd);
     await this.wishListModalComp.selectWishList(wishList);
   }
 
   getSuccessfullyAddedToWishlistMsg(): Locator {
-    return this.itemComp.addedToWishListSuccessMsg;
+    return this.itemComp.getAddedToWishListSuccessMsg();
   }
   getWishlistModal(): Locator {
     return this.wishListModalComp.body;

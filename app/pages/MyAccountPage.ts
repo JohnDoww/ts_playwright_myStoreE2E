@@ -7,7 +7,7 @@ import { step } from "../../utils/helpers/stepDecorator";
 
 export class MyAccountPage extends BasePage {
   private userIndicatorComp: UserIndicator = new UserIndicator(this.page);
-  private settingsTalesComp: SettingsTales=new SettingsTales(this.page);
+  private settingsTalesComp: SettingsTales = new SettingsTales(this.page);
   private wishListComp: WishList = new WishList(this.page);
   private itemComp: Item = new Item(this.page);
 
@@ -51,9 +51,9 @@ export class MyAccountPage extends BasePage {
   }
 
   @step("Get item title from wishlist")
-  async getItemTitleInWishList(itemOrder: number = 0): Promise<string> {
+  async getItemTitleInWishList(itemOrder: number): Promise<string> {
     const itemDescText = await this.helper.getElementText(
-      this.itemComp.preview.titleInWishList.nth(itemOrder)
+      this.itemComp.getTitleLocator("inWishList").nth(itemOrder)
     );
     return itemDescText;
   }

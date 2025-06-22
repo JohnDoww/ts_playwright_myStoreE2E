@@ -4,7 +4,7 @@ import { BaseComp } from "./Base.component";
 export class LoginForm extends BaseComp {
   private createNewUserLink: Locator = this.page.locator(".no-account a");
 
-  async clickOnNoAccount() {
+  async clickNoAccountBtn() {
     await this.createNewUserLink.waitFor();
     await this.createNewUserLink.click();
   }
