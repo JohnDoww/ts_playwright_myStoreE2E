@@ -52,9 +52,10 @@ export class MyAccountPage extends BasePage {
 
   @step("Get item title from wishlist")
   async getItemTitleInWishList(itemOrder: number): Promise<string> {
-    const itemDescText = await this.helper.getElementText(
+    await this.itemComp.getTitleLocator("inWishList").nth(itemOrder).waitFor();
+    const itemTitle = await this.helper.getElementText(
       this.itemComp.getTitleLocator("inWishList").nth(itemOrder)
     );
-    return itemDescText;
+    return itemTitle;
   }
 }
