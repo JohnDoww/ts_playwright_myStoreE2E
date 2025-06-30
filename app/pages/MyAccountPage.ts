@@ -32,9 +32,7 @@ export class MyAccountPage extends BasePage {
   async getAmountOfItemsInWishList(
     listName: string = "My wishlist"
   ): Promise<number> {
-    const itemsAmount = await this.wishListComp.getAmountOfItemsInside(
-      listName
-    );
+    const itemsAmount = await this.wishListComp.getAmountOfItemsInside(listName);
     const result = await this.helper.extractNumberFromStr(itemsAmount);
     return result;
   }
@@ -42,7 +40,7 @@ export class MyAccountPage extends BasePage {
   @step("Wait for wishlists")
   async waitForLists() {
     const wishlist = this.wishListComp.getList();
-    this.helper.waitElementsAppearance(wishlist, 1);
+    await this.helper.waitElementsAppearance(wishlist, 1);
   }
 
   @step("Open wishlist")
