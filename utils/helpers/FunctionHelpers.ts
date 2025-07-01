@@ -15,10 +15,9 @@ export class FunctionHelpers {
   }
 
   @step("Collect elements")
-  async returnAllLocators(locator) {
+  async returnAllLocators(locator: Locator) {
     await locator.first().waitFor();
-    const allSectionLocators = await locator.all();
-    return allSectionLocators;
+    return await locator.all();
   }
 
   @step("Wait item appearance")

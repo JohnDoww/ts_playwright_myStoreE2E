@@ -49,7 +49,8 @@ export class CartPage extends BasePage {
 
   @step("Wait for items")
   async waitItemsAppearance(expectedAmount = 1) {
-    const itemLocator = await this.cartSummaryComp.getAddedItemLocator();
+    const itemLocator = this.cartSummaryComp.getAddedItemLocator();
+    await itemLocator.first().waitFor();
     await this.helper.waitElementsAppearance(itemLocator, expectedAmount);
   }
 

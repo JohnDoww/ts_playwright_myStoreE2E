@@ -68,11 +68,11 @@ guestTest.describe("Cart", { tag: "@S764cec0f" }, () => {
 
       await shopPages.home.goToCart();
       let itemsInCart = await shopPages.cart.allAddedItem();
-      expect(await itemsInCart.length).toBe(expectedAmountOfItemsInCart);
+      expect(itemsInCart.length).toBe(expectedAmountOfItemsInCart);
 
       await shopPages.cart.removeItem();
       itemsInCart = await shopPages.cart.allAddedItem();
-      expect(await itemsInCart.length).toBe(expectedAmountOfItemsInCart - 1);
+      expect(itemsInCart.length).toBe(expectedAmountOfItemsInCart - 1);
 
       await shopPages.cart.removeItem();
       await expect(await shopPages.cart.addedItem()).toBeHidden();
