@@ -9,8 +9,8 @@ guestTest.describe("Filtering", { tag: "@S12a14931" }, () => {
       const filterOptions = await shopPages.catalog.getCompositionFilters();
 
       await shopPages.catalog.compareAmountItemsOnPageAndOnFilter(
-        filterOptions,
+        filterOptions
       );
-    },
+    }
   );
 });

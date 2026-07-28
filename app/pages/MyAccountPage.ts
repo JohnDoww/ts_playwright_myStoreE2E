@@ -19,18 +19,18 @@ export class MyAccountPage extends BasePage {
   @step("Open settings section")
   async openSettings(section: "wishList" | "myInformation") {
     switch (section) {
-      case "wishList":
-        await this.settingsTalesComp.clickMyWishlistTile();
-        break;
-      case "myInformation":
-        await this.settingsTalesComp.clickMyInformationTile();
-        break;
+    case "wishList":
+      await this.settingsTalesComp.clickMyWishlistTile();
+      break;
+    case "myInformation":
+      await this.settingsTalesComp.clickMyInformationTile();
+      break;
     }
   }
 
   @step("Get num of items inside the list")
   async getAmountOfItemsInWishList(
-    listName: string = "My wishlist",
+    listName: string = "My wishlist"
   ): Promise<number> {
     const itemsAmount =
       await this.wishListComp.getAmountOfItemsInside(listName);
@@ -53,7 +53,7 @@ export class MyAccountPage extends BasePage {
   async getItemTitleInWishList(itemOrder: number): Promise<string> {
     await this.itemComp.getTitleLocator("inWishList").nth(itemOrder).waitFor();
     const itemTitle = await this.helper.getElementText(
-      this.itemComp.getTitleLocator("inWishList").nth(itemOrder),
+      this.itemComp.getTitleLocator("inWishList").nth(itemOrder)
     );
     return itemTitle;
   }

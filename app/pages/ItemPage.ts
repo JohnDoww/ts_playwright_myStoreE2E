@@ -16,7 +16,7 @@ export class ItemPage extends BasePage {
   private itemDescComp: Item = new Item(this.page);
   private addedItemModalComp: AddedItemModal = new AddedItemModal(this.page);
   private itemAmountManagerComp: ItemAmountManager = new ItemAmountManager(
-    this.page,
+    this.page
   );
 
   @step("Open item page")
@@ -28,10 +28,10 @@ export class ItemPage extends BasePage {
   async addToCart() {
     await this.page.waitForLoadState("load");
     const waitForModalAppearing = this.helper.responseWaiter(
-      this.partOfRequestModalAppearing,
+      this.partOfRequestModalAppearing
     );
 
-    await this.addToCartComp.clickOnBtn();
+    await this.addToCartComp.clickBtn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }

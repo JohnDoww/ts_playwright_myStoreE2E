@@ -1,4 +1,4 @@
-import { expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { guestTest } from "../fixtures/fixtures";
 
 test.describe("Search @S75685dfd", () => {
@@ -13,7 +13,7 @@ test.describe("Search @S75685dfd", () => {
       for (let item of allItems) {
         await expect(item).toContainText(searchRequest, { ignoreCase: true });
       }
-    },
+    }
   );
 
   guestTest(
@@ -27,6 +27,6 @@ test.describe("Search @S75685dfd", () => {
       for (let item of searchProposals) {
         await expect(item).toContainText(searchRequest, { ignoreCase: true });
       }
-    },
+    }
   );
 });

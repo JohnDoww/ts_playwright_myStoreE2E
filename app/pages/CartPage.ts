@@ -27,7 +27,7 @@ export class CartPage extends BasePage {
   async allAddedItem() {
     await this.waitItemsAppearance();
     return await this.helper.returnAllLocators(
-      this.cartSummaryComp.getAddedItemLocator(),
+      this.cartSummaryComp.getAddedItemLocator()
     );
   }
 
@@ -43,7 +43,7 @@ export class CartPage extends BasePage {
   @step("Change item amount")
   async changeAmountOfAddedItem(action: "+" | "-") {
     const waitTillNeededResponse = this.helper.responseWaiter(
-      this.requestUpdatedAmount,
+      this.requestUpdatedAmount
     );
     await this.itemPage.changeAmountOfNeededItem(action);
     await waitTillNeededResponse;
@@ -61,7 +61,7 @@ export class CartPage extends BasePage {
     await this.page.waitForLoadState("load");
 
     const waitUpdatingStateOfCart = this.helper.responseWaiter(
-      this.requestWhenCartIsUpdated,
+      this.requestWhenCartIsUpdated
     );
     await this.cartSummaryComp.clickRemoveItemBtn(itemOrder);
     await waitUpdatingStateOfCart;

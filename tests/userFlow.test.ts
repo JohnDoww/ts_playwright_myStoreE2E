@@ -13,12 +13,12 @@ guestTest.describe("User flows", { tag: "@S2d56dfe0" }, () => {
         await shopPages.userRegistration.submitRegistrationForm();
 
         expect(
-          await shopPages.userRegistration.getTextOfUserIndicator(),
+          await shopPages.userRegistration.getTextOfUserIndicator()
         ).toContain(inputData["First name"]);
         expect(
-          await shopPages.userRegistration.getTextOfUserIndicator(),
+          await shopPages.userRegistration.getTextOfUserIndicator()
         ).toContain(inputData["Last name"]);
-      },
+      }
     );
   }
 
@@ -39,11 +39,11 @@ guestTest.describe("User flows", { tag: "@S2d56dfe0" }, () => {
     await shopPages.order.passOrderCreationForm(shippingInfo);
 
     await expect(
-      await shopPages.order.getOrderConfirmationTitle(),
+      await shopPages.order.getOrderConfirmationTitle()
     ).toContainText(successOrderMsgText);
     await expect(await shopPages.order.getOrderedItemTitle()).toContainText(
       titleOfOrderedItem,
-      { ignoreCase: true },
+      { ignoreCase: true }
     );
   });
 
@@ -53,7 +53,7 @@ guestTest.describe("User flows", { tag: "@S2d56dfe0" }, () => {
       const itemTitle = (await shopPages.catalog.getItemTitle(5)).toLowerCase();
       await shopPages.home.addItemToWishlist(5);
       await expect(
-        shopPages.home.getSuccessfullyAddedToWishlistMsg(),
+        shopPages.home.getSuccessfullyAddedToWishlistMsg()
       ).toBeVisible();
 
       await shopPages.myAcc.goTo();
@@ -63,8 +63,8 @@ guestTest.describe("User flows", { tag: "@S2d56dfe0" }, () => {
 
       await shopPages.myAcc.openWishList("My wishlist");
       expect(itemTitle).toEqual(
-        (await shopPages.myAcc.getItemTitleInWishList(0)).toLowerCase(),
+        (await shopPages.myAcc.getItemTitleInWishList(0)).toLowerCase()
       );
-    },
+    }
   );
 });

@@ -1,9 +1,10 @@
 import { expect } from "@playwright/test";
 import { guestTest } from "../fixtures/fixtures";
 
-test.describe("Cart @S764cec0f", () => {
+guestTest.describe("Cart", { tag: "@S764cec0f" }, () => {
   guestTest(
-    "STORE-005. Increase item quantity @T7db879e3",
+    "STORE-005. Increase item quantity",
+    { tag: "@T7db879e3" },
     async ({ shopPages }) => {
       let defaultAmountOfNeededItems = 1;
 
@@ -21,7 +22,7 @@ test.describe("Cart @S764cec0f", () => {
         await shopPages.cart.getAmountOfAddedItem();
       defaultAmountOfNeededItems += 1;
       expect(increasedAmountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
-    },
+    }
   );
 
   guestTest(
@@ -45,7 +46,7 @@ test.describe("Cart @S764cec0f", () => {
 
       amountOfAddedItem = await shopPages.cart.getAmountOfAddedItem();
       expect(amountOfAddedItem).toBe(`${amountOfItem}`);
-    },
+    }
   );
 
   guestTest(
@@ -73,7 +74,7 @@ test.describe("Cart @S764cec0f", () => {
 
       await shopPages.cart.removeItem();
       await expect(await shopPages.cart.addedItem()).toBeHidden();
-    },
+    }
   );
 
   guestTest(
@@ -95,7 +96,7 @@ test.describe("Cart @S764cec0f", () => {
         await shopPages.cart.getAmountOfAddedItem();
       defaultAmountOfNeededItems += 1;
       expect(increasedAmountOfAddedItem).toBe(`${defaultAmountOfNeededItems}`);
-    },
+    }
   );
 
   guestTest(
@@ -120,7 +121,7 @@ test.describe("Cart @S764cec0f", () => {
 
       amountOfAddedItem = await shopPages.cart.getAmountOfAddedItem();
       expect(amountOfAddedItem).toBe(`${amountOfItem}`);
-    },
+    }
   );
 
   guestTest(
@@ -149,7 +150,7 @@ test.describe("Cart @S764cec0f", () => {
 
       await shopPages.cart.removeItem();
       await expect(await shopPages.cart.addedItem()).toBeHidden();
-    },
+    }
   );
 
   guestTest(
@@ -164,7 +165,7 @@ test.describe("Cart @S764cec0f", () => {
       await shopPages.item.closeConfirmAddingModal();
 
       expect(await cartItemsCounter.innerText()).toContain(
-        `${expectedCartCounterValue}`,
+        `${expectedCartCounterValue}`
       );
 
       await shopPages.item.addToCart();
@@ -173,8 +174,8 @@ test.describe("Cart @S764cec0f", () => {
 
       await expect(cartItemsCounter).toBeVisible();
       expect(await cartItemsCounter.innerText()).toContain(
-        `${expectedCartCounterValue}`,
+        `${expectedCartCounterValue}`
       );
-    },
+    }
   );
 });

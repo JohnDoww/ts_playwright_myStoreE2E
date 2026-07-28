@@ -4,7 +4,7 @@ import { BaseComp } from "./Base.component";
 export class AddToCart extends BaseComp {
   private body: Locator = this.page.locator(".product-add-to-cart .add");
 
-  async clickOnBtn() {
+  async clickBtn() {
     await this.body.waitFor();
     await this.body.click();
   }

@@ -12,11 +12,11 @@ guestTest.describe("Item", { tag: "@Sbfd0a3d8" }, () => {
 
       await expect(await shopPages.item.getBreadcrumb()).toContainText(
         itemTitle,
-        { ignoreCase: true },
+        { ignoreCase: true }
       );
       await expect(await shopPages.item.getTitle()).toContainText(itemTitle, {
-        ignoreCase: true,
+        ignoreCase: true
       });
-    },
+    }
   );
 });

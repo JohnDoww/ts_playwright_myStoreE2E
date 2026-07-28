@@ -28,7 +28,7 @@ export class CatalogPage extends BasePage {
   @step("Store the item title")
   async getItemTitle(itemOrder: number) {
     const itemDescText = await this.helper.getElementText(
-      this.itemDesc.getTitleLocator("preview").nth(itemOrder),
+      this.itemDesc.getTitleLocator("preview").nth(itemOrder)
     );
     return itemDescText;
   }
@@ -49,7 +49,7 @@ export class CatalogPage extends BasePage {
   async returnItemAmountForFilter(filterLocator) {
     await filterLocator.first().waitFor();
     const productsAmountOnFilter = await this.helper.getElementText(
-      this.filterSections.itemsPerFilter(filterLocator),
+      this.filterSections.itemsPerFilter(filterLocator)
     );
     return await this.helper.extractNumberFromStr(productsAmountOnFilter);
   }
@@ -62,7 +62,7 @@ export class CatalogPage extends BasePage {
       await this.page.waitForLoadState("load");
       await testFilter.waitFor();
       const waitTillNeededResponse = this.helper.responseWaiter(
-        this.requestAfterApplyingFilters,
+        this.requestAfterApplyingFilters
       );
       await filterCheckbox.click();
       await expect(filterCheckbox).toBeChecked({ timeout: 20_000 });
@@ -71,7 +71,7 @@ export class CatalogPage extends BasePage {
       await this.loaderHandler();
 
       const itemsForFilter = await this.returnItemAmountForFilter(
-        await testFilter,
+        await testFilter
       );
 
       const exactAmountOfProducts = (

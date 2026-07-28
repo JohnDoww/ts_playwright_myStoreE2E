@@ -9,7 +9,7 @@ import { BasePage } from "./BasePage.abstract";
 export class OrderPage extends BasePage {
   private itemDescComp: Item = new Item(this.page);
   private orderDeliveryFormComp: OrderDeliveryForm = new OrderDeliveryForm(
-    this.page,
+    this.page
   );
   private orderConfirmedComp: OrderConfirmed = new OrderConfirmed(this.page);
   private paymentFormComp: PaymentForm = new PaymentForm(this.page);

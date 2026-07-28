@@ -10,7 +10,7 @@ export class FunctionHelpers {
   @step("Wait response")
   responseWaiter(toInclude: string) {
     return this.page.waitForResponse((response) =>
-      response.url().includes(toInclude),
+      response.url().includes(toInclude)
     );
   }
 
@@ -38,8 +38,8 @@ export class FunctionHelpers {
         },
         {
           intervals: [500, 1000],
-          timeout: 15_000,
-        },
+          timeout: 15_000
+        }
       )
       .toBeGreaterThanOrEqual(neededAmount);
   }
