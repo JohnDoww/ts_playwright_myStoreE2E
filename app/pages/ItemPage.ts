@@ -29,7 +29,7 @@ export class ItemPage extends BasePage {
       this.partOfRequestModalAppearing
     );
 
-    await this.addToCartComp.clickOnBtn();
+    await this.addToCartComp.clickBtn();
     await waitForModalAppearing;
     await this.page.waitForLoadState("load");
   }
